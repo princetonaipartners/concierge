@@ -266,16 +266,17 @@ $('#btnLookup').addEventListener('click', async ()=>{
 
   setLoading('#loadingA', true);
   try{
-    const r = await fetch(WEBHOOK_LOOKUP, {
-      method:'POST', headers:{'Content-Type':'application/json'},
+    // cache buster avoids any CDN/edge caching while testing
+    const r = await fetch(WEBHOOK_LOOKUP + `?t=${Date.now()}`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ phone: phone10, storeId: STORE_ID, cashierId: CASHIER_ID })
     });
     if(!r.ok) throw new Error(`HTTP ${r.status}`);
     const res = await r.json();
 
-    // Expected minimal fields from n8n lookup:
-    // { found:boolean, alreadyToday:boolean, eligibleNow:boolean, name, totalVisits, points, visitsToNext, smsOptin, phone, message }
-    if (!res.found){
+    // NEW: gate on hasAccount (not "found")
+    if (!res.hasAccount){
       $('#enrollBox').style.display='block';
       $('#signupLink').href = SIGNUP_URL;
       $('#qrImg').src = `https://chart.googleapis.com/chart?cht=qr&chs=220x220&chl=${encodeURIComponent(SIGNUP_URL)}`;
@@ -283,32 +284,50 @@ $('#btnLookup').addEventListener('click', async ()=>{
       return;
     }
 
-    // Fill snapshot
-    state.phone10 = phone10;
-    state.customer = res;
-    state.eligibleNow = !!res.eligibleNow;
+    // Snapshot state from new fields
+    state.phone10      = phone10;
+    state.customer     = res;
     state.alreadyToday = !!res.alreadyToday;
-    state.smsOptin = !!res.smsOptin;
+    state.smsOptin     = !!res.smsOptin;
 
-    $('#custName').textContent = res.name || 'Customer';
+    // NOTE: eligibility to APPLY a free drink now only exists if the customer
+    // is already on the 5th visit before increment (edge case). With the new
+    // API we show whether it will unlock *after finalize*:
+    const willUnlockOnFinalize = !!res.willUnlockOnFinalize;
+    state.eligibleNow = false;            // keep apply disabled on lookup
+    $('#applyReward').checked = false;
+    $('#applyReward').disabled = true;
+
+    // Fill UI from new fields
+    const name = res.customerName || 'Customer';
+    $('#custName').textContent = name;
     $('#chipPhone').textContent = `(${phone10.slice(0,3)}) ${phone10.slice(3,6)}-${phone10.slice(6)}`;
-    $('#chipPoints').textContent = `Points: ${res.points ?? 0}`;
-    $('#chipVisits').textContent = `Visits: ${res.totalVisits ?? 0}`;
-    $('#chipNext').textContent   = `Next reward in ${res.visitsToNext ?? '-'} visit(s)`;
-    $('#chipEligible').style.display = state.eligibleNow ? 'inline-block' : 'none';
+    $('#chipPoints').textContent = 'Points: 0'; // not returned by lookup; show 0 or hide if you prefer
+    $('#chipVisits').textContent = `Visits: ${Number(res.totalVisits ?? 0)}`;
+    const vtn = res.visitsToNextReward;
+    $('#chipNext').textContent = Number.isFinite(vtn) ? `Next reward in ${vtn} visit(s)` : 'Next reward —';
 
-    // Apply/disable based on flags
-    $('#applyReward').checked = state.eligibleNow;
-    $('#applyReward').disabled = !state.eligibleNow;
+    // If this purchase will unlock a reward, show a badge hint
+    const badge = $('#chipEligible');
+    if (willUnlockOnFinalize) {
+      badge.style.display = 'inline-block';
+      badge.textContent = 'Unlocks on finalize';
+    } else {
+      badge.style.display = 'none';
+      badge.textContent = 'Eligible: Free drink';
+    }
+
+    // Finalize availability
     if (state.alreadyToday){
       setBanner('#bannerB','warn','Already checked in today — finalize disabled.');
       $('#btnFinalize').disabled = true;
     } else {
-      setBanner('#bannerB','','');
+      setBanner('#bannerB','ok', `Welcome back${name ? ', ' + name : ''}!`);
       $('#btnFinalize').disabled = false;
     }
 
     // Show log screen
+    $('#enrollBox').style.display='none';
     $('#lookupCard').style.display='none';
     $('#logCard').style.display='block';
     $('#orderTotal').focus();
