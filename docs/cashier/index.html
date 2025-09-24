@@ -122,6 +122,7 @@
         <div class="row"><div>Subtotal</div><div class="right big" id="sumSubtotal">$0.00</div></div>
         <div class="row"><div class="muted">Reward</div><div class="right" id="sumReward">—</div></div>
         <div class="row"><div class="muted">Review bonus</div><div class="right" id="sumReview">—</div></div>
+        <div class="row"><div class="muted">Points discount</div><div class="right" id="sumPts">$0.00</div></div>
         <hr style="border:none;border-top:1px solid #2b355a;margin:10px 0">
         <div class="row"><div class="big">Net to charge</div><div class="right big" id="sumNet">$0.00</div></div>
       </div>
@@ -139,9 +140,21 @@
           <span>Review verified in-store (-$5 bonus)</span>
         </label>
         <label class="row" id="applyWrap">
-          <input type="checkbox" id="applyReward">
+          <input type="checkbox" id="applyReward" disabled>
           <span>Apply free Coffee/20oz drink now</span>
         </label>
+      </div>
+    </div>
+
+    <div class="grid two">
+      <div class="field">
+        <label for="redeemPts">Redeem points</label>
+        <input id="redeemPts" type="number" min="0" step="1" placeholder="0" />
+        <div class="hint" id="redeemHint">Available: 0 · $0.00 value (100 pts = $5)</div>
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <button class="ghost" id="btnMaxRedeem" type="button">Redeem Max</button>
       </div>
     </div>
 
@@ -164,6 +177,7 @@
       <div class="row"><div>Subtotal</div><div class="right" id="doneSubtotal">$0.00</div></div>
       <div class="row"><div>Reward</div><div class="right" id="doneReward">—</div></div>
       <div class="row"><div>Review bonus</div><div class="right" id="doneReview">—</div></div>
+      <div class="row"><div>Points discount</div><div class="right" id="donePts">$0.00</div></div>
       <hr style="border:none;border-top:1px solid #2b355a;margin:10px 0">
       <div class="row"><div class="big">Net</div><div class="right big" id="doneNet">$0.00</div></div>
     </div>
@@ -179,14 +193,16 @@ const WEBHOOK_FINALIZE= 'https://princetonai.app.n8n.cloud/webhook/cashier/final
 const STORE_ID   = 'hamilton-main';   // optional, sent to n8n
 const CASHIER_ID = 'register-1';      // optional, sent to n8n
 
-const SIGNUP_URL = 'https://princetonaipartners.github.io/concierge/signup/'; // replace with your live sign-up
+const SIGNUP_URL = 'https://princetonaipartners.github.io/concierge/signup/';
 /* ================================================== */
 
 const CATEGORIES = ['Grocery','Convenience','Coffee','Deli/food','Krispy Chicken','Other'];
 const REWARD_CYCLE = 5;
+const DOLLARS_PER_POINT = 0.05; // 100 points = $5
 
 const $ = q => document.querySelector(q);
 const money = v => (Number.isFinite(+v) ? (+v).toLocaleString(undefined,{style:'currency',currency:'USD'}) : '$0.00');
+const clamp  = (v,min,max)=> Math.min(max, Math.max(min, v));
 const clamp0 = v => Math.max(0, v||0);
 const digits10 = v => {
   const d = String(v||'').replace(/\D/g,'');
@@ -197,9 +213,12 @@ let state = {
   visitId: null,
   phone10: null,
   customer: null,     // from lookup
-  eligibleNow: false, // 5th visit flag returned by lookup
+  eligibleNow: false, // apply free drink now (disabled for lookup flow)
   alreadyToday: false,
   smsOptin: false,
+  points: 0,          // current balance
+  reviewEligible: false, // can use $5 review bonus
+  redeemPts: 0,
 };
 
 function setBanner(elId, kind, text){
@@ -208,7 +227,6 @@ function setBanner(elId, kind, text){
   el.textContent = text;
   el.style.display = text ? 'block' : 'none';
 }
-
 function setLoading(id, on){ $(id).hidden = !on; }
 
 function buildTiles(){
@@ -224,22 +242,43 @@ function selectedCats(){
   return [...document.querySelectorAll('#catTiles .tile.sel')].map(el=>el.textContent);
 }
 
+function maxRedeemPtsGivenSubtotal(subtotal, reviewUsed){
+  // Don’t let discounts push net below 0
+  const maxDollarsFromPts = clamp0(subtotal - (reviewUsed ? 5 : 0));
+  return Math.floor(maxDollarsFromPts / DOLLARS_PER_POINT);
+}
+
 function recompute(){
   const subtotal = Number($('#orderTotal').value || 0);
-  const review = $('#reviewVerified').checked ? 5 : 0;
+  const reviewUsed = $('#reviewVerified').checked ? 5 : 0;
+
+  // Cap redeem points by available, by subtotal, and by input
+  const maxPtsBySubtotal = maxRedeemPtsGivenSubtotal(subtotal, !!reviewUsed);
+  const desiredPts = Number($('#redeemPts').value || 0);
+  const cap = Math.min(state.points, maxPtsBySubtotal);
+  state.redeemPts = clamp(desiredPts, 0, cap);
+  if (desiredPts !== state.redeemPts) $('#redeemPts').value = state.redeemPts;
+
+  const ptsDollars = state.redeemPts * DOLLARS_PER_POINT;
+
   const apply = $('#applyReward').checked && state.eligibleNow ? 'FREE Coffee or 20 oz Drink' : '';
-  const rewardDiscount = 0; // we ring $0 drink; net is subtotal - review only
-  const net = clamp0(subtotal - review - rewardDiscount);
+  const rewardDiscount = 0; // free drink rung as $0
+  const net = clamp0(subtotal - reviewUsed - rewardDiscount - ptsDollars);
 
   $('#pointsHint').textContent = `Points this visit: ${Math.max(0, Math.floor(subtotal))}`;
   $('#sumSubtotal').textContent = money(subtotal);
   $('#sumReward').textContent   = apply || '—';
-  $('#sumReview').textContent   = review ? ('-$'+review.toFixed(2)) : '—';
+  $('#sumReview').textContent   = reviewUsed ? ('-$'+reviewUsed.toFixed(2)) : '—';
+  $('#sumPts').textContent      = ptsDollars ? ('-'+money(ptsDollars)) : '$0.00';
   $('#sumNet').textContent      = money(net);
+
+  // Update hint for redeem input
+  const remaining = state.points - state.redeemPts;
+  $('#redeemHint').textContent = `Available: ${state.points} · Using ${state.redeemPts} (left ${remaining}) · ${money(state.redeemPts*DOLLARS_PER_POINT)} value (100 pts = $5)`;
 }
 
 function resetAll(){
-  state = { visitId:null, phone10:null, customer:null, eligibleNow:false, alreadyToday:false, smsOptin:false };
+  state = { visitId:null, phone10:null, customer:null, eligibleNow:false, alreadyToday:false, smsOptin:false, points:0, reviewEligible:false, redeemPts:0 };
 
   $('#phone').value='';
   setBanner('#bannerA','',''); setBanner('#bannerB','','');
@@ -248,6 +287,9 @@ function resetAll(){
   $('#orderTotal').value='';
   $('#reviewVerified').checked=false;
   $('#applyReward').checked=false;
+  $('#applyReward').disabled=true;
+  $('#redeemPts').value='0';
+
   [...document.querySelectorAll('#catTiles .tile')].forEach(el=>el.classList.remove('sel'));
 
   $('#lookupCard').style.display='block';
@@ -266,7 +308,6 @@ $('#btnLookup').addEventListener('click', async ()=>{
 
   setLoading('#loadingA', true);
   try{
-    // cache buster avoids any CDN/edge caching while testing
     const r = await fetch(WEBHOOK_LOOKUP + `?t=${Date.now()}`, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -275,7 +316,6 @@ $('#btnLookup').addEventListener('click', async ()=>{
     if(!r.ok) throw new Error(`HTTP ${r.status}`);
     const res = await r.json();
 
-    // NEW: gate on hasAccount (not "found")
     if (!res.hasAccount){
       $('#enrollBox').style.display='block';
       $('#signupLink').href = SIGNUP_URL;
@@ -284,30 +324,30 @@ $('#btnLookup').addEventListener('click', async ()=>{
       return;
     }
 
-    // Snapshot state from new fields
+    // Snapshot state
     state.phone10      = phone10;
     state.customer     = res;
     state.alreadyToday = !!res.alreadyToday;
     state.smsOptin     = !!res.smsOptin;
+    state.points       = Number(res.points ?? 0);
+    state.reviewEligible = !!res.reviewEligible;
+    state.redeemPts    = 0;
 
-    // NOTE: eligibility to APPLY a free drink now only exists if the customer
-    // is already on the 5th visit before increment (edge case). With the new
-    // API we show whether it will unlock *after finalize*:
+    // Eligibility to apply free drink now is off; reward unlock hint only
     const willUnlockOnFinalize = !!res.willUnlockOnFinalize;
-    state.eligibleNow = false;            // keep apply disabled on lookup
+    state.eligibleNow = false;
     $('#applyReward').checked = false;
     $('#applyReward').disabled = true;
 
-    // Fill UI from new fields
+    // Fill UI
     const name = res.customerName || 'Customer';
     $('#custName').textContent = name;
     $('#chipPhone').textContent = `(${phone10.slice(0,3)}) ${phone10.slice(3,6)}-${phone10.slice(6)}`;
-    $('#chipPoints').textContent = 'Points: 0'; // not returned by lookup; show 0 or hide if you prefer
+    $('#chipPoints').textContent = `Points: ${state.points}`;
     $('#chipVisits').textContent = `Visits: ${Number(res.totalVisits ?? 0)}`;
     const vtn = res.visitsToNextReward;
     $('#chipNext').textContent = Number.isFinite(vtn) ? `Next reward in ${vtn} visit(s)` : 'Next reward —';
 
-    // If this purchase will unlock a reward, show a badge hint
     const badge = $('#chipEligible');
     if (willUnlockOnFinalize) {
       badge.style.display = 'inline-block';
@@ -317,13 +357,23 @@ $('#btnLookup').addEventListener('click', async ()=>{
       badge.textContent = 'Eligible: Free drink';
     }
 
-    // Finalize availability
-    if (state.alreadyToday){
-      setBanner('#bannerB','warn','Already checked in today — finalize disabled.');
-      $('#btnFinalize').disabled = true;
+    // Review bonus eligibility
+    $('#reviewVerified').disabled = !state.reviewEligible;
+    $('#reviewVerified').checked  = false;
+    if (!state.reviewEligible) {
+      setBanner('#bannerB','warn','Review bonus already used on this account.');
     } else {
       setBanner('#bannerB','ok', `Welcome back${name ? ', ' + name : ''}!`);
-      $('#btnFinalize').disabled = false;
+    }
+
+    // Redeem input
+    $('#redeemPts').value = '0';
+    $('#redeemHint').textContent = `Available: ${state.points} · $${(state.points*DOLLARS_PER_POINT).toFixed(2)} total value (100 pts = $5)`;
+
+    // Finalize availability
+    $('#btnFinalize').disabled = !!state.alreadyToday;
+    if (state.alreadyToday){
+      setBanner('#bannerB','warn','Already checked in today — finalize disabled.');
     }
 
     // Show log screen
@@ -348,6 +398,14 @@ $('#btnShowQR').addEventListener('click', ()=>{
 $('#orderTotal').addEventListener('input', recompute);
 $('#reviewVerified').addEventListener('change', recompute);
 $('#applyReward').addEventListener('change', recompute);
+$('#redeemPts').addEventListener('input', recompute);
+$('#btnMaxRedeem').addEventListener('click', ()=>{
+  const subtotal = Number($('#orderTotal').value || 0);
+  const maxBySubtotal = maxRedeemPtsGivenSubtotal(subtotal, $('#reviewVerified').checked);
+  const cap = Math.min(state.points, maxBySubtotal);
+  $('#redeemPts').value = String(cap);
+  recompute();
+});
 
 /* ---------- Finalize ---------- */
 $('#btnFinalize').addEventListener('click', async ()=>{
@@ -368,6 +426,7 @@ $('#btnFinalize').addEventListener('click', async ()=>{
     orderTotal: subtotal,
     categories,
     reviewVerified: !!$('#reviewVerified').checked,
+    redeemPoints: Number(state.redeemPts || 0),           // <-- NEW
     applyRewards: apply ? ['FIFTH_VISIT_FREE_DRINK'] : [],
     storeId: STORE_ID,
     cashierId: CASHIER_ID,
@@ -382,12 +441,14 @@ $('#btnFinalize').addEventListener('click', async ()=>{
     if(!r.ok) throw new Error(`HTTP ${r.status}`);
     const res = await r.json();
 
-    // Expected minimal fields from finalize:
-    // { success, netCharge, orderTotal, rewardLabel, reviewBonus, pointsEarned, newPoints, message }
+    // Expected: { success, netCharge, orderTotal, rewardLabel, reviewBonus, pointsRedeemed, pointsEarned, newPoints, message }
+    const usedPtsDollars = (res.pointsRedeemed ?? state.redeemPts) * DOLLARS_PER_POINT;
+
     $('#doneSubtotal').textContent = money(res.orderTotal ?? subtotal);
     $('#doneReward').textContent   = res.rewardLabel || (apply ? 'FREE Coffee or 20 oz Drink' : '—');
     $('#doneReview').textContent   = (res.reviewBonus ? '-$'+Number(res.reviewBonus).toFixed(2) : '—');
-    $('#doneNet').textContent      = money(res.netCharge ?? Math.max(0, subtotal - (res.reviewBonus||0)));
+    $('#donePts').textContent      = usedPtsDollars ? ('-'+money(usedPtsDollars)) : '$0.00';
+    $('#doneNet').textContent      = money(res.netCharge ?? Math.max(0, subtotal - (res.reviewBonus||0) - usedPtsDollars));
 
     $('#doneMsg').textContent = res.message || 'Visit logged. SMS will be sent if opted-in.';
     $('#logCard').style.display='none';
