@@ -330,7 +330,8 @@ $('#btnLookup').addEventListener('click', async ()=>{
     state.alreadyToday = !!res.alreadyToday;
     state.smsOptin     = !!res.smsOptin;
     state.points       = Number(res.points ?? 0);
-    state.reviewEligible = !!res.reviewEligible;
+    // ******** FIX: honor API field reviewBonusAvailable ********
+    state.reviewEligible = !!res.reviewBonusAvailable;
     state.redeemPts    = 0;
 
     // Eligibility to apply free drink now is off; reward unlock hint only
@@ -357,13 +358,15 @@ $('#btnLookup').addEventListener('click', async ()=>{
       badge.textContent = 'Eligible: Free drink';
     }
 
-    // Review bonus eligibility
+    // Review bonus eligibility + banner behavior
     $('#reviewVerified').disabled = !state.reviewEligible;
     $('#reviewVerified').checked  = false;
-    if (!state.reviewEligible) {
-      setBanner('#bannerB','warn','Review bonus already used on this account.');
-    } else {
-      setBanner('#bannerB','ok', `Welcome back${name ? ', ' + name : ''}!`);
+    if (!state.alreadyToday) {
+      if (!state.reviewEligible) {
+        setBanner('#bannerB','warn','Review bonus already used on this account.');
+      } else {
+        setBanner('#bannerB','ok', `Welcome back${name ? ', ' + name : ''}!`);
+      }
     }
 
     // Redeem input
@@ -426,7 +429,7 @@ $('#btnFinalize').addEventListener('click', async ()=>{
     orderTotal: subtotal,
     categories,
     reviewVerified: !!$('#reviewVerified').checked,
-    redeemPoints: Number(state.redeemPts || 0),           // <-- NEW
+    redeemPoints: Number(state.redeemPts || 0),
     applyRewards: apply ? ['FIFTH_VISIT_FREE_DRINK'] : [],
     storeId: STORE_ID,
     cashierId: CASHIER_ID,
