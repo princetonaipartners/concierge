@@ -16,8 +16,8 @@
     var(--bg); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial;}
   .wrap{max-width:720px;margin:28px auto;padding:0 18px}
   .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px;position:relative}
-  h1{margin:0 0 6px;font-weight:800}
-  .sub{color:var(--muted);margin-bottom:14px}
+  h1{margin:0 0 6px;font-weight:800;text-align:center;}
+  .sub{color:var(--muted);margin-bottom:14px;text-align:center;max-width: 500px; margin-left: auto; margin-right: auto;}
   .field{display:flex;flex-direction:column;gap:6px;margin-top:10px}
   label{font-weight:700}
   input[type="text"],input[type="tel"],input[type="email"]{
@@ -41,9 +41,128 @@
   .cta:hover{background:#0f162a}
   .loading[hidden]{display:none !important;}
   .loading{position:absolute;inset:0;background:rgba(10,14,25,.55);backdrop-filter:blur(1px);
-           border-radius:16px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:5}
+          border-radius:16px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:5}
   .spinner{width:20px;height:20px;border-radius:50%;border:3px solid rgba(85,201,255,.25);border-top-color:#55c9ff;animation:spin .9s linear infinite}
   @keyframes spin{to{transform:rotate(360deg)}}
+
+  .footer {
+    text-align: center;
+    padding: 20px 0 40px;
+  }
+  .footer a {
+    text-decoration: none;
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.2s ease;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .footer a:hover {
+    color: var(--ink);
+  }
+  .footer .brand-link {
+    background: linear-gradient(90deg, var(--muted), var(--ink), var(--muted));
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: shimmer 5s infinite linear;
+  }
+  .footer-subtext {
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0.7;
+    margin-bottom: 12px;
+  }
+  .terms-link {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+  }
+  .terms-link:hover {
+    color: var(--ink);
+  }
+
+  .shimmer-green {
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--muted), var(--brand), var(--muted));
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: shimmer 4s infinite linear;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .modal-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-box {
+    background: var(--card);
+    padding: 24px;
+    border-radius: var(--radius);
+    max-width: 500px;
+    width: calc(100% - 36px);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--ring);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+  }
+  .modal-overlay.visible .modal-box {
+    transform: scale(1);
+  }
+  .modal-box h2 {
+    margin: 0 0 10px;
+  }
+  .modal-box p, .modal-box ul {
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  .modal-box ul {
+    padding-left: 20px;
+  }
+  .modal-box li {
+    margin-bottom: 8px;
+  }
+  .modal-actions {
+    margin-top: 20px;
+    text-align: right;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  .legal-modal {
+      z-index: 101; /* Ensure it appears on top */
+  }
 </style>
 </head>
 <body>
@@ -54,7 +173,7 @@
     </div>
 
     <h1>Join Hamilton Deli & Grill Rewards</h1>
-    <div class="sub">Earn points on every purchase and unlock free drinks.</div>
+    <div class="sub">Earn points with every purchase and redeem them anytime. Just use your phone number at the counter to earn points, check your points, or <span class="shimmer-green">cash in your rewards!</span></div>
 
     <!-- $5 review bonus promo -->
     <div class="promo">
@@ -119,10 +238,48 @@
   </div>
 </div>
 
+<div class="footer">
+  <a href="https://www.princeton-ai.com/index.html" target="_blank" rel="noopener noreferrer" class="brand-link">
+    Powered by Princeton AI Partners
+  </a>
+  <div class="footer-subtext">contact us to bring AI to your small business!</div>
+  <button class="terms-link" id="termsBtn">Points Terms & Conditions</button>
+</div>
+
+<!-- Points Summary Modal -->
+<div class="modal-overlay" id="termsModal">
+  <div class="modal-box">
+    <h2>Points System Summary</h2>
+    <ul>
+      <li>Earn 1 point for every $1 spent on qualifying purchases.</li>
+      <li>Redeem 100 points for a $5 discount on your order.</li>
+      <li>Points cannot be redeemed for cash and have no cash value.</li>
+      <li>We reserve the right to modify the terms of the rewards program at any time.</li>
+    </ul>
+    <div class="modal-actions">
+      <button class="ghost" id="closeModalBtn" style="width: auto; padding: 10px 15px;">Close</button>
+    </div>
+    <div style="text-align: center; margin-top: 15px;">
+        <button class="terms-link" id="legalBtn">View Full Legal Terms</button>
+    </div>
+  </div>
+</div>
+
+<!-- Legal Terms Modal -->
+<div class="modal-overlay legal-modal" id="legalModal">
+    <div class="modal-box">
+      <h2>Rewards Program Legal Terms</h2>
+      <p>By participating in the Hamilton Deli & Grill Rewards Program, you agree to these terms. This program is available to individuals 18 years or older. We reserve the right to modify, suspend, or terminate the program at any time without notice. Points are non-transferable, not redeemable for cash, and are void where prohibited by law. We may use the personal information you provide for program administration and marketing communications. Under no circumstances shall we be liable for any direct or indirect damages arising out of the program. These terms are governed by the laws of the State of New Jersey.</p>
+      <div class="modal-actions">
+        <button class="ghost" id="closeLegalModalBtn" style="width: auto; padding: 10px 15px;">Close</button>
+      </div>
+    </div>
+  </div>
+
 <script>
 /* ===== CONFIG ===== */
 const SIGNUP_WEBHOOK = 'https://princetonai.app.n8n.cloud/webhook/cashier-signup';
-const GOOGLE_REVIEW_URL = 'https://www.google.com/search?sca_esv=7c6c3e386d10efbb&rlz=1C1VDKB_enUS1111US1111&sxsrf=AE3TifPDTSY_1vKuJTDwrgIzhzFKms7MBg:1758691417730&si=AMgyJEtREmoPL4P1I5IDCfuA8gybfVI2d5Uj7QMwYCZHKDZ-E4MQScdB3haeo5WTi8cfBo-3sf0b6XZPgFwWBCNZisb62KNCOpCPImErw7oenzP9CZ1Jk2yL5zvLs1jAN0cCxO0o-znlC0WnWkbzwAUpxTc9vJiRjg%3D%3D&q=Hamilton+Deli+%26+Grill+Reviews&sa=X&ved=2ahUKEwjhuuSJ1PCPAxXQD1kFHUWRNH4Q0bkNegQIOhAE&biw=1536&bih=826&dpr=1.25';
+const GOOGLE_REVIEW_URL = 'https://www.google.com/search?q=Hamilton+Deli+%26+Grill+Reviews';
 /* =================== */
 
 document.getElementById('reviewLink').href  = GOOGLE_REVIEW_URL;
@@ -185,6 +342,46 @@ async function submitForm(e){
 
 $('#theForm').addEventListener('submit', submitForm);
 $('#backBtn').addEventListener('click', (e)=>{ e.preventDefault(); show($('#doneCard'), false); show($('#formCard'), true); });
+
+// Modal Logic
+const termsModal = $('#termsModal');
+const termsBtn = $('#termsBtn');
+const closeModalBtn = $('#closeModalBtn');
+const legalModal = $('#legalModal');
+const legalBtn = $('#legalBtn');
+const closeLegalModalBtn = $('#closeLegalModalBtn');
+
+function showTermsModal(show) {
+  if (show) {
+    termsModal.classList.add('visible');
+  } else {
+    termsModal.classList.remove('visible');
+  }
+}
+function showLegalModal(show) {
+    if (show) {
+        legalModal.classList.add('visible');
+    } else {
+        legalModal.classList.remove('visible');
+    }
+}
+
+termsBtn.addEventListener('click', () => showTermsModal(true));
+closeModalBtn.addEventListener('click', () => showTermsModal(false));
+termsModal.addEventListener('click', (e) => {
+  if (e.target === termsModal) {
+    showTermsModal(false);
+  }
+});
+
+legalBtn.addEventListener('click', () => showLegalModal(true));
+closeLegalModalBtn.addEventListener('click', () => showLegalModal(false));
+legalModal.addEventListener('click', (e) => {
+    if (e.target === legalModal) {
+        showLegalModal(false);
+    }
+});
+
 </script>
 </body>
 </html>
