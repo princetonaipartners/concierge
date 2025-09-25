@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Join Hamilton Deli & Grill Rewards</title>
+<style>
+  :root{
+    --bg:#0b1020; --card:#101629; --ink:#e8ecff; --muted:#9aa3b2;
+    --brand:#5fe1a5; --brand2:#55c9ff; --accent:#ffd166;
+    --ring:#2a375a; --shadow:0 10px 30px rgba(0,0,0,.35); --radius:16px;
+  }
+  html,body{margin:0;height:100%;background:
+    radial-gradient(80% 140% at 10% -10%, rgba(85,201,255,.18), transparent 55%),
+    radial-gradient(60% 120% at 110% -10%, rgba(95,225,165,.15), transparent 45%),
+    var(--bg); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial;}
+  .wrap{max-width:720px;margin:28px auto;padding:0 18px}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px;position:relative}
+  h1{margin:0 0 6px;font-weight:800;text-align:center;}
+  .sub{color:var(--muted);margin-bottom:14px;text-align:center;max-width: 500px; margin-left: auto; margin-right: auto;}
+  .field{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+  label{font-weight:700}
+  input[type="text"],input[type="tel"],input[type="email"]{
+    background:#0e1425;color:#fff;border:1px solid #243055;border-radius:12px;padding:14px;font-size:16px;outline:none}
+  input:focus{box-shadow:0 0 0 3px var(--ring);border-color:#37508f}
+  .hint{color:var(--muted);font-size:13px}
+  .row{display:flex;align-items:center;gap:10px}
+  .actions{margin-top:16px}
+  button{width:100%;padding:15px;border:none;border-radius:12px;font-weight:800;font-size:16px;cursor:pointer}
+  .primary{background:linear-gradient(180deg,var(--brand),var(--brand2));color:#08111f}
+  .ghost{background:#0e1425;color:#c7d2fe;border:1px solid #2b355a}
+  button[disabled]{opacity:.7;cursor:not-allowed}
+  .banner{display:none;margin-bottom:12px;padding:12px 14px;border-radius:12px;font-weight:700}
+  .ok{background:#123724;color:#9ff3c9;border:1px solid #1f6b49}
+  .warn{background:#3a2a07;color:#ffe2a6;border:1px solid #8d6b19}
+  .err{background:#3d0f17;color:#ffd0d8;border:1px solid #8f2236}
+  .promo{margin-top:14px;padding:12px;border:1px dashed #555;border-radius:12px;background:#0f1527}
+  .promo b{color:#ffd166}
+  .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+  .cta{display:inline-block;text-decoration:none;font-weight:800;border:1px solid #2b355a;border-radius:10px;padding:10px 12px;color:#dbe1ff;background:#0e1425}
+  .cta:hover{background:#0f162a}
+  .loading[hidden]{display:none !important;}
+  .loading{position:absolute;inset:0;background:rgba(10,14,25,.55);backdrop-filter:blur(1px);
+          border-radius:16px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:5}
+  .spinner{width:20px;height:20px;border-radius:50%;border:3px solid rgba(85,201,255,.25);border-top-color:#55c9ff;animation:spin .9s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  .footer {
+    text-align: center;
+    padding: 20px 0 40px;
+  }
+  .footer a {
+    text-decoration: none;
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.2s ease;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .footer a:hover {
+    color: var(--ink);
+  }
+  .footer .brand-link {
+    background: linear-gradient(90deg, var(--muted), var(--ink), var(--muted));
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: shimmer 5s infinite linear;
+  }
+  .footer-subtext {
+    font-size: 12px;
+    color: var(--muted);
+    opacity: 0.7;
+    margin-bottom: 12px;
+  }
+  .terms-link {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: underline;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+  }
+  .terms-link:hover {
+    color: var(--ink);
+  }
+
+  .shimmer-green {
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--muted), var(--brand), var(--muted));
+    background-size: 200% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    animation: shimmer 4s infinite linear;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .modal-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-box {
+    background: var(--card);
+    padding: 24px;
+    border-radius: var(--radius);
+    max-width: 500px;
+    width: calc(100% - 36px);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--ring);
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+  }
+  .modal-overlay.visible .modal-box {
+    transform: scale(1);
+  }
+  .modal-box h2 {
+    margin: 0 0 10px;
+  }
+  .modal-box p, .modal-box ul {
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  .modal-box ul {
+    padding-left: 20px;
+  }
+  .modal-box li {
+    margin-bottom: 8px;
+  }
+  .modal-actions {
+    margin-top: 20px;
+    text-align: right;
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+  }
+  .legal-modal {
+      z-index: 101; /* Ensure it appears on top */
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="formCard" aria-live="polite">
+    <div class="loading" id="loading" hidden>
+      <div class="spinner" aria-hidden="true"></div><div>Submitting…</div>
+    </div>
+
+    <h1>Join Hamilton Deli & Grill Rewards</h1>
+    <div class="sub">Earn points with every purchase and redeem them anytime. Just use your phone number at the counter to earn points, check your points, or <span class="shimmer-green">cash in your rewards!</span></div>
+
+    <!-- $5 review bonus promo -->
+    <div class="promo">
+      <b>$5 off your next purchase:</b> after you join, <u>leave us a Google review</u> and show the cashier—your $5 review bonus will be applied at checkout.
+      <div class="cta-row">
+        <a class="cta" id="reviewLink" target="_blank" rel="noopener">⭐ Leave a Google Review</a>
+      </div>
+    </div>
+
+    <div class="banner warn" id="warnBanner"></div>
+    <div class="banner err"  id="errBanner"></div>
+    <div class="banner ok"   id="okBanner"></div>
+
+    <form id="theForm" novalidate>
+      <div class="field">
+        <label for="phone">📞 Phone number *</label>
+        <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567"/>
+        <div class="hint">Digits only; last 10 are used.</div>
+      </div>
+
+      <div class="field">
+        <label for="name">👤 Full name *</label>
+        <input id="name" type="text" autocomplete="name" placeholder="Jane Doe"/>
+      </div>
+
+      <div class="field">
+        <label for="birthday">🎂 Birthday *</label>
+        <input id="birthday" type="text" inputmode="numeric" placeholder="yyyy-mm-dd" maxlength="10"/>
+        <div class="hint">Format: <b>YYYY-MM-DD</b>. Hyphens insert automatically.</div>
+      </div>
+
+      <div class="field">
+        <label for="email">✉️ Email (optional)</label>
+        <input id="email" type="email" autocomplete="email" placeholder="jane@example.com"/>
+      </div>
+
+      <div class="field">
+        <label class="row">
+          <input id="smsOptin" type="checkbox" checked/>
+          <span>Send me exclusive offers & rewards via SMS</span>
+        </label>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="btnJoin" type="submit">
+          <span class="btn-label">Join rewards</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Success card -->
+  <div class="card" id="doneCard" style="display:none" aria-live="polite">
+    <div class="banner ok" style="display:block">You’re all set! 🎉</div>
+    <p style="margin:8px 0 12px;color:#cfe6ff">
+      Tell the cashier your phone number at checkout. If you leave us a review now and show it to the cashier, you’ll receive <b>$5 off</b> your next purchase.
+    </p>
+    <div class="cta-row">
+      <a class="cta" id="reviewLink2" target="_blank" rel="noopener">⭐ Leave a Google Review</a>
+      <a class="cta" id="backBtn" href="#" role="button">← Back to form</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <a href="https://www.princeton-ai.com/index.html" target="_blank" rel="noopener noreferrer" class="brand-link">
+    Powered by Princeton AI Partners
+  </a>
+  <div class="footer-subtext">contact us to bring AI to your small business!</div>
+  <button class="terms-link" id="termsBtn">Points Terms & Conditions</button>
+</div>
+
+<!-- Points Summary Modal -->
+<div class="modal-overlay" id="termsModal">
+  <div class="modal-box">
+    <h2>Points System Summary</h2>
+    <ul>
+      <li>Earn 1 point for every $1 spent on qualifying purchases.</li>
+      <li>Redeem 100 points for a $5 discount on your order.</li>
+      <li>Points cannot be redeemed for cash and have no cash value.</li>
+      <li>We reserve the right to modify the terms of the rewards program at any time.</li>
+    </ul>
+    <div class="modal-actions">
+      <button class="ghost" id="closeModalBtn" style="width: auto; padding: 10px 15px;">Close</button>
+    </div>
+    <div style="text-align: center; margin-top: 15px;">
+        <button class="terms-link" id="legalBtn">View Full Legal Terms</button>
+    </div>
+  </div>
+</div>
+
+<!-- Legal Terms Modal -->
+<div class="modal-overlay legal-modal" id="legalModal">
+    <div class="modal-box">
+      <h2>Rewards Program Legal Terms</h2>
+      <p>By participating in the Hamilton Deli & Grill Rewards Program, you agree to these terms. This program is available to individuals 18 years or older. We reserve the right to modify, suspend, or terminate the program at any time without notice. Points are non-transferable, not redeemable for cash, and are void where prohibited by law. We may use the personal information you provide for program administration and marketing communications. Under no circumstances shall we be liable for any direct or indirect damages arising out of the program. These terms are governed by the laws of the State of New Jersey.</p>
+      <div class="modal-actions">
+        <button class="ghost" id="closeLegalModalBtn" style="width: auto; padding: 10px 15px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ===== CONFIG ===== */
+const SIGNUP_WEBHOOK = 'https://princetonai.app.n8n.cloud/webhook/cashier-signup';
+const GOOGLE_REVIEW_URL = 'https://www.google.com/search?q=Hamilton+Deli+%26+Grill+Reviews';
+/* =================== */
+
+document.getElementById('reviewLink').href  = GOOGLE_REVIEW_URL;
+document.getElementById('reviewLink2').href = GOOGLE_REVIEW_URL;
+
+function $(q){ return document.querySelector(q); }
+function show(el, on){ el.style.display = on ? 'block' : 'none'; }
+function digits10(v){ const d = String(v||'').replace(/\D/g,''); return d.length>=10 ? d.slice(-10) : null; }
+function clearBanners(){ ['okBanner','warnBanner','errBanner'].forEach(id => { const el = $('#'+id); el.style.display='none'; el.textContent=''; }); }
+function setBanner(id, cls, msg){ const el = $('#'+id); el.className = 'banner ' + cls; el.textContent = msg; el.style.display='block'; }
+
+(function birthdayMask(){
+  const el = $('#birthday');
+  el.addEventListener('input', () => {
+    const digits = el.value.replace(/\D/g,'').slice(0,8);
+    let out=''; if(digits.length<=4) out=digits;
+    else if(digits.length<=6) out = digits.slice(0,4)+'-'+digits.slice(4);
+    else out = digits.slice(0,4)+'-'+digits.slice(4,6)+'-'+digits.slice(6);
+    el.value = out;
+  });
+})();
+
+async function submitForm(e){
+  e.preventDefault();
+  clearBanners();
+
+  const phone10 = digits10($('#phone').value);
+  const name    = $('#name').value.trim();
+  const bday    = $('#birthday').value.trim();
+  const email   = $('#email').value.trim();
+  const smsOpt  = $('#smsOptin').checked;
+
+  if(!phone10){ setBanner('warnBanner','warn','Please enter a valid phone number.'); return; }
+  if(!name){ setBanner('warnBanner','warn','Please enter your full name.'); return; }
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(bday)){ setBanner('warnBanner','warn','Birthday must be YYYY-MM-DD.'); return; }
+
+  // Loading state
+  const btn = $('#btnJoin'); const label = btn.querySelector('.btn-label');
+  $('#loading').hidden = false; btn.disabled = true; label.textContent = 'Submitting…';
+
+  try{
+    const res = await fetch(SIGNUP_WEBHOOK + `?t=${Date.now()}`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ phone: phone10, name, birthday: bday, email, smsOptin: smsOpt })
+    });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+
+    // Success -> show done card with review CTA
+    show($('#formCard'), false);
+    show($('#doneCard'), true);
+  }catch(err){
+    console.error(err);
+    setBanner('errBanner','err','Sign-up failed. Please try again.');
+  }finally{
+    $('#loading').hidden = true; btn.disabled = false; label.textContent = 'Join rewards';
+  }
+}
+
+$('#theForm').addEventListener('submit', submitForm);
+$('#backBtn').addEventListener('click', (e)=>{ e.preventDefault(); show($('#doneCard'), false); show($('#formCard'), true); });
+
+// Modal Logic
+const termsModal = $('#termsModal');
+const termsBtn = $('#termsBtn');
+const closeModalBtn = $('#closeModalBtn');
+const legalModal = $('#legalModal');
+const legalBtn = $('#legalBtn');
+const closeLegalModalBtn = $('#closeLegalModalBtn');
+
+function showTermsModal(show) {
+  if (show) {
+    termsModal.classList.add('visible');
+  } else {
+    termsModal.classList.remove('visible');
+  }
+}
+function showLegalModal(show) {
+    if (show) {
+        legalModal.classList.add('visible');
+    } else {
+        legalModal.classList.remove('visible');
+    }
+}
+
+termsBtn.addEventListener('click', () => showTermsModal(true));
+closeModalBtn.addEventListener('click', () => showTermsModal(false));
+termsModal.addEventListener('click', (e) => {
+  if (e.target === termsModal) {
+    showTermsModal(false);
+  }
+});
+
+legalBtn.addEventListener('click', () => showLegalModal(true));
+closeLegalModalBtn.addEventListener('click', () => showLegalModal(false));
+legalModal.addEventListener('click', (e) => {
+    if (e.target === legalModal) {
+        showLegalModal(false);
+    }
+});
+
+</script>
+</body>
+</html>
+
