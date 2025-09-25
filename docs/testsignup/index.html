@@ -4,184 +4,379 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Join Hamilton Deli & Grill Rewards</title>
+
+<!-- Google Fonts: Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 <style>
-  :root{
-    --bg:#0b1020; --card:#101629; --ink:#e8ecff; --muted:#9aa3b2;
-    --brand:#5fe1a5; --brand2:#55c9ff; --accent:#ffd166;
-    --ring:#2a375a; --shadow:0 10px 30px rgba(0,0,0,.35); --radius:16px;
-  }
-  html,body{margin:0;height:100%;background:
-    radial-gradient(80% 140% at 10% -10%, rgba(85,201,255,.18), transparent 55%),
-    radial-gradient(60% 120% at 110% -10%, rgba(95,225,165,.15), transparent 45%),
-    var(--bg); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial;}
-  .wrap{max-width:720px;margin:28px auto;padding:0 18px}
-  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px;position:relative}
-  h1{margin:0 0 6px;font-weight:800;text-align:center;}
-  .sub{color:var(--muted);margin-bottom:14px;text-align:center;max-width: 500px; margin-left: auto; margin-right: auto;}
-  .field{display:flex;flex-direction:column;gap:6px;margin-top:10px}
-  label{font-weight:700}
-  input[type="text"],input[type="tel"],input[type="email"]{
-    background:#0e1425;color:#fff;border:1px solid #243055;border-radius:12px;padding:14px;font-size:16px;outline:none}
-  input:focus{box-shadow:0 0 0 3px var(--ring);border-color:#37508f}
-  .hint{color:var(--muted);font-size:13px}
-  .row{display:flex;align-items:center;gap:10px}
-  .actions{margin-top:16px}
-  button{width:100%;padding:15px;border:none;border-radius:12px;font-weight:800;font-size:16px;cursor:pointer}
-  .primary{background:linear-gradient(180deg,var(--brand),var(--brand2));color:#08111f}
-  .ghost{background:#0e1425;color:#c7d2fe;border:1px solid #2b355a}
-  button[disabled]{opacity:.7;cursor:not-allowed}
-  .banner{display:none;margin-bottom:12px;padding:12px 14px;border-radius:12px;font-weight:700}
-  .ok{background:#123724;color:#9ff3c9;border:1px solid #1f6b49}
-  .warn{background:#3a2a07;color:#ffe2a6;border:1px solid #8d6b19}
-  .err{background:#3d0f17;color:#ffd0d8;border:1px solid #8f2236}
-  .promo{margin-top:14px;padding:12px;border:1px dashed #555;border-radius:12px;background:#0f1527}
-  .promo b{color:#ffd166}
-  .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-  .cta{display:inline-block;text-decoration:none;font-weight:800;border:1px solid #2b355a;border-radius:10px;padding:10px 12px;color:#dbe1ff;background:#0e1425}
-  .cta:hover{background:#0f162a}
-  .loading[hidden]{display:none !important;}
-  .loading{position:absolute;inset:0;background:rgba(10,14,25,.55);backdrop-filter:blur(1px);
-          border-radius:16px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:5}
-  .spinner{width:20px;height:20px;border-radius:50%;border:3px solid rgba(85,201,255,.25);border-top-color:#55c9ff;animation:spin .9s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-
-  .footer {
-    text-align: center;
-    padding: 20px 0 40px;
-  }
-  .footer a {
-    text-decoration: none;
-    color: var(--muted);
-    font-weight: 500;
-    font-size: 14px;
-    transition: color 0.2s ease;
-    display: block;
-    margin-bottom: 8px;
-  }
-  .footer a:hover {
-    color: var(--ink);
-  }
-  .footer .brand-link {
-    background: linear-gradient(90deg, var(--muted), var(--ink), var(--muted));
-    background-size: 200% 100%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    animation: shimmer 5s infinite linear;
-  }
-  .footer-subtext {
-    font-size: 12px;
-    color: var(--muted);
-    opacity: 0.7;
-    margin-bottom: 12px;
-  }
-  .terms-link {
-    font-size: 12px;
-    color: var(--muted);
-    text-decoration: underline;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    font-family: inherit;
-  }
-  .terms-link:hover {
-    color: var(--ink);
+  /* --- 1. Root Variables from Princeton AI Theme --- */
+  :root {
+      --bg-color: #F8F8F6;
+      --primary-text-color: #1D1D1F;
+      --secondary-text-color: #6E6E73;
+      --accent-gradient: linear-gradient(45deg, #0A84FF, #0060CE);
+      --accent-color-start: #0A84FF;
+      --accent-color-end: #0060CE;
+      --border-color: #d2d2d7;
+      --card-bg-color: #FFFFFF;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
 
-  .shimmer-green {
-    font-weight: 700;
-    background: linear-gradient(90deg, var(--muted), var(--brand), var(--muted));
-    background-size: 200% 100%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    animation: shimmer 4s infinite linear;
+  /* --- 2. Global Styles --- */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--primary-text-color);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
   }
 
-  @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
+  /* --- 3. Dynamic Background Elements --- */
+  #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -2;
   }
 
-  /* Modal Styles */
-  .modal-overlay {
-    position: fixed;
+  /* --- 4. Main Layout & Card --- */
+  .wrap { max-width: 550px; width: 100%; margin: 28px auto; padding: 0 1.5rem; }
+  .card {
+    background: var(--card-bg-color);
+    border-radius: 24px;
+    padding: 2.5rem;
+    position: relative;
+    border: 1px solid var(--border-color);
+    overflow: hidden; /* To contain loading overlay */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.07);
+    animation: glow-pulse 4s ease-in-out infinite;
+  }
+  
+  /* --- Shiny Text Effect (For Footer) --- */
+  .shiny-text {
+    position: relative;
+    font-weight: 800;
+    color: var(--accent-color-start);
+  }
+  .shiny-text::after {
+    content: attr(data-text);
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.6);
-    backdrop-filter: blur(5px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
+    background-image: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shiny-effect 2s linear infinite;
+  }
+
+  /* --- NEW "PULSE" ANIMATION FOR PROMO --- */
+  .promo-highlight-pulse {
+    font-weight: 800;
+    color: #10B981; /* Money green */
+    animation: green-pulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes green-pulse {
+      0%, 100% {
+          text-shadow: 0 0 4px rgba(16, 185, 129, 0.3);
+      }
+      50% {
+          text-shadow: 0 0 12px rgba(16, 185, 129, 0.8);
+      }
+  }
+
+  /* --- NEW SPLIT TEXT ANIMATION FOR TITLE --- */
+  h1 {
+    margin: 0 0 8px;
+    font-size: 2.25rem;
+    text-align: center;
+    line-height: 1.3;
+    font-weight: 800;
+    color: var(--accent-color-start);
+    min-height: 2.6em; /* Prevents layout shift for 2 lines */
+  }
+  h1 .char {
+    display: inline-block;
     opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+    transform: translateY(25px);
+    animation: slide-in-char 0.6s cubic-bezier(0.2, 0.6, 0.3, 1) forwards;
   }
-  .modal-overlay.visible {
-    opacity: 1;
-    pointer-events: auto;
+
+  @keyframes slide-in-char {
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
   }
+  
+  .sub {
+    color: var(--secondary-text-color);
+    margin-bottom: 2rem;
+    text-align: center;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.05rem;
+  }
+
+  /* --- 5. Form Element Styling --- */
+  .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem; }
+  label { font-weight: 500; font-size: 0.95rem; }
+  input[type="text"], input[type="tel"], input[type="email"] {
+    background: #FFFFFF;
+    color: var(--primary-text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 1rem;
+    outline: none;
+    font-family: var(--font-family);
+    transition: all 0.2s ease-in-out;
+  }
+  input:focus {
+    border-color: var(--accent-color-start);
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
+  }
+  .hint { color: var(--secondary-text-color); font-size: 0.85rem; }
+  .row { display: flex; align-items: center; gap: 10px; }
+  
+  label.row {
+    cursor: pointer;
+    font-weight: 500;
+  }
+  input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    top: 2px;
+    transition: all 0.2s ease;
+  }
+  input[type="checkbox"]:checked {
+    background-color: var(--accent-color-start);
+    border-color: var(--accent-color-start);
+  }
+  input[type="checkbox"]:checked::after {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* --- 6. Buttons & CTAs --- */
+  .actions { margin-top: 1.5rem; }
+  button.primary {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 980px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    cursor: pointer;
+    background: var(--accent-gradient);
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 113, 227, 0.2);
+  }
+  button.primary:hover {
+      transform: scale(1.03);
+      box-shadow: 0 15px 30px rgba(0, 113, 227, 0.25);
+  }
+  button[disabled] { opacity:.7; cursor:not-allowed; transform: none; }
+
+  /* --- 7. Banners & Promo Box --- */
+  .banner { display:none; margin-bottom:1.5rem; padding: 1rem 1.25rem; border-radius:12px; font-weight:500; border: 1px solid; }
+  .ok { background:#e6f4ea; color:#1e4620; border-color:#a3d9b3; }
+  .warn { background:#fff8e6; color:#66460d; border-color:#ffdab3; }
+  .err { background:#fbeae5; color:#8a260c; border-color:#f5b8a5; }
+
+  .promo {
+    margin-top: 2.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    background-color: #f0f7ff;
+    border: 1px solid #cce1ff;
+  }
+  .promo b { color: #0052cc; }
+  .promo u { text-decoration-color: #b3d4ff; }
+
+  .cta-row { display:flex; flex-wrap:wrap; gap:12px; margin-top:1rem; justify-content: center; }
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid var(--border-color);
+    border-radius: 980px;
+    padding: 0.6rem 1rem;
+    color: var(--primary-text-color);
+    background: #FFFFFF;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+  .cta:hover { background: #f0f0ed; transform: translateY(-2px); }
+  
+  /* --- 8. Loading Spinner --- */
+  .loading[hidden] { display:none !important; }
+  .loading {
+    position:absolute; inset:0;
+    background:rgba(255,255,255,.6);
+    backdrop-filter:blur(4px);
+    -webkit-backdrop-filter:blur(4px);
+    border-radius:24px;
+    display:flex; align-items:center; justify-content:center; gap:10px; z-index:5;
+    color: var(--primary-text-color);
+  }
+  .spinner {
+    width:20px; height:20px; border-radius:50%;
+    border:3px solid rgba(10, 132, 255, 0.2);
+    border-top-color: var(--accent-color-start);
+    animation:spin .9s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg) } }
+
+  /* --- 9. Footer Styling --- */
+  .footer { text-align: center; padding: 20px 0 40px; }
+  .footer a.brand-link {
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 4px;
+    /* Apply shiny effect to footer link */
+    color: var(--accent-color-start);
+    position: relative;
+  }
+  .footer a.brand-link:hover { opacity: 0.8; }
+  .footer-subtext { font-size: 0.9rem; color: var(--secondary-text-color); margin-bottom: 12px; }
+  .terms-link {
+    font-size: 0.9rem;
+    color: var(--secondary-text-color);
+    text-decoration: none;
+    cursor: pointer;
+    background: none; border: none; padding: 0;
+    font-family: inherit;
+  }
+  .terms-link:hover { color: var(--accent-color-start); text-decoration: underline; }
+
+  @keyframes shiny-effect {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  /* --- 10. Modal Styling --- */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center; z-index: 100;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .modal-overlay.visible { opacity: 1; pointer-events: auto; }
   .modal-box {
-    background: var(--card);
-    padding: 24px;
-    border-radius: var(--radius);
+    background: var(--card-bg-color);
+    padding: 2rem;
+    border-radius: 16px;
     max-width: 500px;
     width: calc(100% - 36px);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--ring);
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    border: 1px solid var(--border-color);
     transform: scale(0.95);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
   }
-  .modal-overlay.visible .modal-box {
-    transform: scale(1);
-  }
-  .modal-box h2 {
-    margin: 0 0 10px;
-  }
+  .modal-overlay.visible .modal-box { transform: scale(1); }
+  .modal-box h2 { margin: 0 0 1rem; font-size: 1.5rem; }
   .modal-box p, .modal-box ul {
-    color: var(--muted);
-    line-height: 1.6;
-    font-size: 15px;
+    color: var(--secondary-text-color);
+    line-height: 1.7;
+    font-size: 1rem;
   }
-  .modal-box ul {
-    padding-left: 20px;
-  }
-  .modal-box li {
-    margin-bottom: 8px;
-  }
+  .modal-box ul { padding-left: 20px; }
+  .modal-box li { margin-bottom: 8px; }
   .modal-actions {
-    margin-top: 20px;
-    text-align: right;
+    margin-top: 1.5rem;
     display: flex;
     gap: 10px;
     justify-content: flex-end;
   }
-  .legal-modal {
-      z-index: 101; /* Ensure it appears on top */
+  button.ghost {
+    background-color: var(--bg-color);
+    color: var(--primary-text-color);
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 1rem;
+    border-radius: 980px;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  button.ghost:hover {
+    background-color: #e9e9e7;
+  }
+  .legal-modal { z-index: 101; }
+
+  @keyframes glow-pulse {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(10, 132, 255, 0.2), 0 10px 30px rgba(0,0,0,0.07);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(10, 132, 255, 0.4), 0 10px 30px rgba(0,0,0,0.07);
+    }
+  }
+
+  @media (max-width: 400px) {
+    h1 {
+      font-size: 1.75rem;
+    }
+    .card {
+      padding: 2rem 1.5rem;
+    }
   }
 </style>
 </head>
 <body>
+<div id="particles-js"></div>
+
 <div class="wrap">
   <div class="card" id="formCard" aria-live="polite">
     <div class="loading" id="loading" hidden>
       <div class="spinner" aria-hidden="true"></div><div>Submitting…</div>
     </div>
 
-    <h1>Join Hamilton Deli & Grill Rewards</h1>
-    <div class="sub">Earn points with every purchase and redeem them anytime. Just use your phone number at the counter to earn points, check your points, or <span class="shimmer-green">cash in your rewards!</span></div>
-
-    <!-- $5 review bonus promo -->
-    <div class="promo">
-      <b>$5 off your next purchase:</b> after you join, <u>leave us a Google review</u> and show the cashier—your $5 review bonus will be applied at checkout.
-      <div class="cta-row">
-        <a class="cta" id="reviewLink" target="_blank" rel="noopener">⭐ Leave a Google Review</a>
-      </div>
-    </div>
+    <h1 id="animated-title">Welcome to Hamilton Deli & Grill Rewards!</h1>
+    
+    <div class="sub">Earn points and redeem them anytime. Just use your phone number at the counter to get started!</div>
 
     <div class="banner warn" id="warnBanner"></div>
     <div class="banner err"  id="errBanner"></div>
@@ -189,28 +384,28 @@
 
     <form id="theForm" novalidate>
       <div class="field">
-        <label for="phone">📞 Phone number *</label>
+        <label for="phone">Phone number *</label>
         <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567"/>
-        <div class="hint">Digits only; last 10 are used.</div>
+        <div class="hint">Your 10-digit number is used to look you up.</div>
       </div>
 
       <div class="field">
-        <label for="name">👤 Full name *</label>
+        <label for="name">Full name *</label>
         <input id="name" type="text" autocomplete="name" placeholder="Jane Doe"/>
       </div>
 
       <div class="field">
-        <label for="birthday">🎂 Birthday *</label>
-        <input id="birthday" type="text" inputmode="numeric" placeholder="yyyy-mm-dd" maxlength="10"/>
+        <label for="birthday">Birthday *</label>
+        <input id="birthday" type="text" inputmode="numeric" placeholder="YYYY-MM-DD" maxlength="10"/>
         <div class="hint">Format: <b>YYYY-MM-DD</b>. Hyphens insert automatically.</div>
       </div>
 
       <div class="field">
-        <label for="email">✉️ Email (optional)</label>
+        <label for="email">Email (optional)</label>
         <input id="email" type="email" autocomplete="email" placeholder="jane@example.com"/>
       </div>
 
-      <div class="field">
+      <div class="field" style="margin-top: 1.5rem;">
         <label class="row">
           <input id="smsOptin" type="checkbox" checked/>
           <span>Send me exclusive offers & rewards via SMS</span>
@@ -219,30 +414,38 @@
 
       <div class="actions">
         <button class="primary" id="btnJoin" type="submit">
-          <span class="btn-label">Join rewards</span>
+          <span class="btn-label">Join Rewards Program</span>
         </button>
       </div>
     </form>
+    
+    <!-- $5 review bonus promo -->
+    <div class="promo">
+      <span class="promo-highlight-pulse">$5 off your next purchase:</span> after you join, <u>leave us a Google review</u> and show the cashier—your bonus will be applied at checkout.
+      <div class="cta-row">
+        <a class="cta" id="reviewLink" target="_blank" rel="noopener"><i class="fa-brands fa-google"></i> Leave a Google Review</a>
+      </div>
+    </div>
   </div>
 
   <!-- Success card -->
   <div class="card" id="doneCard" style="display:none" aria-live="polite">
-    <div class="banner ok" style="display:block">You’re all set! 🎉</div>
-    <p style="margin:8px 0 12px;color:#cfe6ff">
-      Tell the cashier your phone number at checkout. If you leave us a review now and show it to the cashier, you’ll receive <b>$5 off</b> your next purchase.
+    <h1 class="shiny-text" data-text="You’re all set! 🎉">You’re all set! 🎉</h1>
+    <p class="sub">
+      Tell the cashier your phone number at checkout. If you leave us a review now and show it to them, you’ll receive <b>$5 off</b> your next purchase.
     </p>
-    <div class="cta-row">
-      <a class="cta" id="reviewLink2" target="_blank" rel="noopener">⭐ Leave a Google Review</a>
-      <a class="cta" id="backBtn" href="#" role="button">← Back to form</a>
+    <div class="cta-row" style="justify-content: center;">
+      <a class="cta" id="reviewLink2" target="_blank" rel="noopener"><i class="fa-brands fa-google"></i> Leave a Google Review</a>
+      <a class="cta" id="backBtn" href="#" role="button"><i class="fas fa-arrow-left"></i> Back to form</a>
     </div>
   </div>
 </div>
 
 <div class="footer">
-  <a href="https://www.princeton-ai.com/index.html" target="_blank" rel="noopener noreferrer" class="brand-link">
-    Powered by Princeton AI Partners
+  <a href="https://www.princeton-ai.com" target="_blank" rel="noopener noreferrer" class="brand-link shiny-text" data-text="Powered by Princeton-AI.com">
+    Powered by Princeton-AI.com
   </a>
-  <div class="footer-subtext">contact us to bring AI to your small business!</div>
+  <div class="footer-subtext">Contact us to bring AI to your small business!</div>
   <button class="terms-link" id="termsBtn">Points Terms & Conditions</button>
 </div>
 
@@ -257,10 +460,8 @@
       <li>We reserve the right to modify the terms of the rewards program at any time.</li>
     </ul>
     <div class="modal-actions">
-      <button class="ghost" id="closeModalBtn" style="width: auto; padding: 10px 15px;">Close</button>
-    </div>
-    <div style="text-align: center; margin-top: 15px;">
-        <button class="terms-link" id="legalBtn">View Full Legal Terms</button>
+       <button class="terms-link" id="legalBtn" style="margin-right: auto;">View Full Legal Terms</button>
+       <button class="ghost" id="closeModalBtn">Close</button>
     </div>
   </div>
 </div>
@@ -271,20 +472,71 @@
       <h2>Rewards Program Legal Terms</h2>
       <p>By participating in the Hamilton Deli & Grill Rewards Program, you agree to these terms. This program is available to individuals 18 years or older. We reserve the right to modify, suspend, or terminate the program at any time without notice. Points are non-transferable, not redeemable for cash, and are void where prohibited by law. We may use the personal information you provide for program administration and marketing communications. Under no circumstances shall we be liable for any direct or indirect damages arising out of the program. These terms are governed by the laws of the State of New Jersey.</p>
       <div class="modal-actions">
-        <button class="ghost" id="closeLegalModalBtn" style="width: auto; padding: 10px 15px;">Close</button>
+        <button class="ghost" id="closeLegalModalBtn">Close</button>
       </div>
     </div>
   </div>
 
+<!-- Particles.js library -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
 <script>
-/* ===== CONFIG ===== */
+document.addEventListener('DOMContentLoaded', () => {
+    // --- NEW Split Text Title Animation ---
+    const animatedTitle = document.getElementById('animated-title');
+    if (animatedTitle) {
+        const originalText = animatedTitle.textContent.trim();
+        animatedTitle.innerHTML = ''; // Clear original text to rebuild
+
+        let charDelay = 0;
+        // Split text into words to handle wrapping correctly
+        originalText.split(' ').forEach(word => {
+            const wordContainer = document.createElement('span');
+            wordContainer.style.display = 'inline-block'; // Ensures word doesn't break
+
+            word.split('').forEach(char => {
+                const charSpan = document.createElement('span');
+                charSpan.className = 'char';
+                charSpan.textContent = char;
+                charSpan.style.animationDelay = `${charDelay}s`;
+                wordContainer.appendChild(charSpan);
+                charDelay += 0.04;
+            });
+            animatedTitle.appendChild(wordContainer);
+
+            // Add a space after the word
+            animatedTitle.appendChild(document.createTextNode(' '));
+        });
+    }
+
+    // --- Interactive Backgrounds (from Princeton AI theme) ---
+    particlesJS('particles-js', {
+        "particles": {
+            "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#0A84FF" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.5, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
+            "size": { "value": 3, "random": true },
+            "line_linked": { "enable": false },
+            "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": { "onhover": { "enable": false, "mode": "bubble" }, "onclick": { "enable": false }, "resize": true },
+        },
+        "retina_detect": true
+    });
+});
+
+/* ===== CONFIG (NO CHANGE) ===== */
 const SIGNUP_WEBHOOK = 'https://princetonai.app.n8n.cloud/webhook/cashier-signup';
 const GOOGLE_REVIEW_URL = 'https://www.google.com/search?q=Hamilton+Deli+%26+Grill+Reviews';
-/* =================== */
+/* =============================== */
 
 document.getElementById('reviewLink').href  = GOOGLE_REVIEW_URL;
 document.getElementById('reviewLink2').href = GOOGLE_REVIEW_URL;
 
+// --- Helper Functions & Form Logic (NO CHANGE) ---
 function $(q){ return document.querySelector(q); }
 function show(el, on){ el.style.display = on ? 'block' : 'none'; }
 function digits10(v){ const d = String(v||'').replace(/\D/g,''); return d.length>=10 ? d.slice(-10) : null; }
@@ -316,9 +568,8 @@ async function submitForm(e){
   if(!name){ setBanner('warnBanner','warn','Please enter your full name.'); return; }
   if(!/^\d{4}-\d{2}-\d{2}$/.test(bday)){ setBanner('warnBanner','warn','Birthday must be YYYY-MM-DD.'); return; }
 
-  // Loading state
   const btn = $('#btnJoin'); const label = btn.querySelector('.btn-label');
-  $('#loading').hidden = false; btn.disabled = true; label.textContent = 'Submitting…';
+  $('#loading').hidden = false; btn.disabled = true;
 
   try{
     const res = await fetch(SIGNUP_WEBHOOK + `?t=${Date.now()}`, {
@@ -329,21 +580,20 @@ async function submitForm(e){
     if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
 
-    // Success -> show done card with review CTA
     show($('#formCard'), false);
     show($('#doneCard'), true);
   }catch(err){
     console.error(err);
     setBanner('errBanner','err','Sign-up failed. Please try again.');
   }finally{
-    $('#loading').hidden = true; btn.disabled = false; label.textContent = 'Join rewards';
+    $('#loading').hidden = true; btn.disabled = false;
   }
 }
 
 $('#theForm').addEventListener('submit', submitForm);
 $('#backBtn').addEventListener('click', (e)=>{ e.preventDefault(); show($('#doneCard'), false); show($('#formCard'), true); });
 
-// Modal Logic
+// --- Modal Logic (NO CHANGE) ---
 const termsModal = $('#termsModal');
 const termsBtn = $('#termsBtn');
 const closeModalBtn = $('#closeModalBtn');
@@ -385,3 +635,10 @@ legalModal.addEventListener('click', (e) => {
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
