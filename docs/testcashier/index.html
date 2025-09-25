@@ -461,7 +461,6 @@
 <body>
 <div id="particles-js"></div>
 <div class="wrap">
-  <!-- ICONS -->
   <svg width="0" height="0" style="display:none">
     <symbol id="icon-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
     <symbol id="icon-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
@@ -479,7 +478,6 @@
   </div>
 
   <div class="screens-container" style="position: relative;">
-    <!-- LOOKUP CARD -->
     <div class="card screen" id="lookupCard" aria-live="polite">
       <div class="loading" id="loadingA" hidden>
         <div class="spinner" aria-hidden="true"></div><div>Working…</div>
@@ -519,7 +517,6 @@
       </div>
     </div>
 
-    <!-- LOG CARD -->
     <div class="card screen hidden" id="logCard" style="display:none" aria-live="polite">
       <div class="loading" id="loadingB" hidden><div class="spinner"></div><div>Finalizing…</div></div>
       <div id="bannerB" class="banner"></div>
@@ -586,7 +583,6 @@
       </div>
     </div>
 
-    <!-- CONFIRM CARD -->
     <div class="card screen hidden" id="doneCard" style="display:none" aria-live="polite">
       <div class="banner ok" style="display:flex" id="doneMsg">
         <svg class="icon"><use href="#icon-ok" /></svg>
@@ -663,14 +659,13 @@
         The customer has already checked in today. Only one visit per day is allowed.</p>
         <p><strong>Do points expire?</strong><br>
         No, points do not expire.</p>
-         <p><strong>Customer wants to update their info?</strong><br>
+       <p><strong>Customer wants to update their info?</strong><br>
         They need to sign up again. For issues, text (609)-529-0509.</p>
     </div>
   </div>
 
 </div>
 
-<!-- Holiday Info Modal -->
 <div class="modal-overlay" id="holidayModal">
     <div class="modal-card">
         <h3 id="modalTitle">Holiday Name</h3>
@@ -692,15 +687,15 @@
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
-/* ===================== CONFIG ===================== */
+/* ===================== CONFIG (FROM WORKING VERSION) ===================== */
 const WEBHOOK_LOOKUP  = 'https://princetonai.app.n8n.cloud/webhook/cashier/lookup';
 const WEBHOOK_FINALIZE= 'https://princetonai.app.n8n.cloud/webhook/cashier/finalize';
 
-const STORE_ID    = 'hamilton-main';     // optional, sent to n8n
-const CASHIER_ID = 'register-1';       // optional, sent to n8n
+const STORE_ID    = 'hamilton-main';  // optional, sent to n8n
+const CASHIER_ID = 'register-1';     // optional, sent to n8n
 
 const SIGNUP_URL = 'https://princetonaipartners.github.io/concierge/signup/';
-/* ================================================== */
+/* ======================================================================== */
 
 const CATEGORIES = ['Grocery','Convenience','Coffee','Deli/food','Krispy Chicken','Other'];
 const REWARD_CYCLE = 5;
@@ -708,7 +703,7 @@ const DOLLARS_PER_POINT = 0.05; // 100 points = $5
 
 const $ = q => document.querySelector(q);
 const money = v => (Number.isFinite(+v) ? (+v).toLocaleString(undefined,{style:'currency',currency:'USD'}) : '$0.00');
-const clampValue  = (v,min,max)=> Math.min(max, Math.max(min, v));
+const clamp  = (v,min,max)=> Math.min(max, Math.max(min, v));
 const clamp0 = v => Math.max(0, v||0);
 const digits10 = v => {
   const d = String(v||'').replace(/\D/g,'');
@@ -770,7 +765,7 @@ function recompute(){
   const maxPtsBySubtotal = maxRedeemPtsGivenSubtotal(subtotal, !!reviewUsed);
   const desiredPts = Number($('#redeemPts').value || 0);
   const cap = Math.min(state.points, maxPtsBySubtotal);
-  state.redeemPts = clampValue(desiredPts, 0, cap);
+  state.redeemPts = clamp(desiredPts, 0, cap);
   if (desiredPts !== state.redeemPts) $('#redeemPts').value = state.redeemPts;
 
   const ptsDollars = state.redeemPts * DOLLARS_PER_POINT;
@@ -815,9 +810,13 @@ function showScreen(screenId) {
     ALL_SCREENS.forEach(id => {
         const el = $(`#${id}`);
         if (id === screenId) {
-            el.classList.remove('hidden');
+            el.style.display = 'block';
+            requestAnimationFrame(() => { el.classList.remove('hidden'); });
         } else {
             el.classList.add('hidden');
+            el.addEventListener('transitionend', () => {
+                if (el.classList.contains('hidden')) el.style.display = 'none';
+            }, { once: true });
         }
     });
 }
@@ -839,7 +838,7 @@ function resetAll(){
 
 function updateClock() {
     const now = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' };
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', second: '2-digit' };
     $('#liveClock').textContent = now.toLocaleDateString('en-US', options);
 }
 
@@ -1015,7 +1014,10 @@ $('#btnFinalize').addEventListener('click', async ()=>{
 $('#btnBack').addEventListener('click', resetAll);
 $('#btnReset').addEventListener('click', resetAll);
 
-/* ---------- Page Load & Initializations ---------- */
+/* ======================================================================== */
+/* ---------- NEW UI FEATURES (from new version) ---------- */
+/* ======================================================================== */
+
 document.addEventListener('DOMContentLoaded', () => {
     // Title Animation
     const title = document.querySelector('h1');
@@ -1256,4 +1258,3 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 </body>
 </html>
-
