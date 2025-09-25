@@ -25,6 +25,7 @@
       --border-color: #d2d2d7;
       --card-bg-color: #FFFFFF;
       --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --success-green: #28a745;
   }
 
   /* --- 2. Global Styles --- */
@@ -41,7 +42,7 @@
     line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Centering footer */
     align-items: center;
     justify-content: center;
     padding: 2rem 0;
@@ -58,78 +59,57 @@
   }
 
   /* --- 4. Main Layout & Card --- */
-  .wrap { max-width: 550px; width: 100%; margin: 28px auto; padding: 0 1.5rem; }
+  .wrap { max-width: 550px; width: 100%; margin: auto; padding: 0 1.5rem; }
   .card {
     background: var(--card-bg-color);
     border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.07);
     padding: 2.5rem;
     position: relative;
     border: 1px solid var(--border-color);
-    overflow: hidden; /* To contain loading overlay */
-    box-shadow: 0 10px 30px rgba(0,0,0,0.07);
-    animation: glow-pulse 4s ease-in-out infinite;
-  }
-  
-  /* --- Shiny Text Effect (For Footer) --- */
-  .shiny-text {
-    position: relative;
-    font-weight: 800;
-    color: var(--accent-color-start);
-  }
-  .shiny-text::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    background-image: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%);
-    background-size: 200% 100%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: shiny-effect 2s linear infinite;
+  }
+  .screen-wrapper {
+      position: relative;
+  }
+   .screen {
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+   }
+   .screen.hidden {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+   }
+
+  h1 { 
+      margin: 0 0 8px; 
+      font-weight: 800; 
+      font-size: 2rem; 
+      text-align: center; 
+      color: var(--primary-text-color); 
+      height: 80px; /* Give space for two lines */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  h1 > div { text-align: center; }
+
+  .title-word {
+    display: inline-block;
+    white-space: nowrap;
   }
 
-  /* --- NEW "PULSE" ANIMATION FOR PROMO --- */
-  .promo-highlight-pulse {
-    font-weight: 800;
-    color: #10B981; /* Money green */
-    animation: green-pulse 2.5s ease-in-out infinite;
-  }
-
-  @keyframes green-pulse {
-      0%, 100% {
-          text-shadow: 0 0 4px rgba(16, 185, 129, 0.3);
-      }
-      50% {
-          text-shadow: 0 0 12px rgba(16, 185, 129, 0.8);
-      }
-  }
-
-  /* --- NEW SPLIT TEXT ANIMATION FOR TITLE --- */
-  h1 {
-    margin: 0 0 8px;
-    font-size: 2.25rem;
-    text-align: center;
-    line-height: 1.3;
-    font-weight: 800;
-    color: var(--accent-color-start);
-    min-height: 2.6em; /* Prevents layout shift for 2 lines */
-  }
-  h1 .char {
+  .title-char {
     display: inline-block;
     opacity: 0;
-    transform: translateY(25px);
-    animation: slide-in-char 0.6s cubic-bezier(0.2, 0.6, 0.3, 1) forwards;
+    transform: translateY(-20px);
+    animation: char-enter 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
   }
-
-  @keyframes slide-in-char {
-      to {
-          opacity: 1;
-          transform: translateY(0);
-      }
-  }
+  @keyframes char-enter { to { opacity: 1; transform: translateY(0); } }
   
   .sub {
     color: var(--secondary-text-color);
@@ -212,237 +192,268 @@
       transform: scale(1.03);
       box-shadow: 0 15px 30px rgba(0, 113, 227, 0.25);
   }
-  button[disabled] { opacity:.7; cursor:not-allowed; transform: none; }
+  button[disabled] { opacity:.7; cursor:not-allowed; transform: none; box-shadow: none; }
 
   /* --- 7. Banners & Promo Box --- */
-  .banner { display:none; margin-bottom:1.5rem; padding: 1rem 1.25rem; border-radius:12px; font-weight:500; border: 1px solid; }
-  .ok { background:#e6f4ea; color:#1e4620; border-color:#a3d9b3; }
-  .warn { background:#fff8e6; color:#66460d; border-color:#ffdab3; }
-  .err { background:#fbeae5; color:#8a260c; border-color:#f5b8a5; }
-
-  .promo {
-    margin-top: 2.5rem;
-    padding: 1rem 1.25rem;
-    border-radius: 12px;
-    background-color: #f0f7ff;
-    border: 1px solid #cce1ff;
+  .banner{
+    display:none; 
+    margin-bottom:1.25rem; 
+    padding: 0.75rem 1rem; 
+    border-radius:12px; 
+    font-weight:500;
+    border: 1px solid;
   }
-  .promo b { color: #0052cc; }
-  .promo u { text-decoration-color: #b3d4ff; }
+  .ok{ background:#e6f4ea; color:#1e4620; border-color: #a3d9b3; }
+  .warn{ background:#fff8e6; color:#66460d; border-color: #ffdab3; }
+  .err{ background:#fbeae5; color:#8a260c; border-color: #f5b8a5; }
 
-  .cta-row { display:flex; flex-wrap:wrap; gap:12px; margin-top:1rem; justify-content: center; }
-  .cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    font-weight: 500;
-    border: 1px solid var(--border-color);
-    border-radius: 980px;
-    padding: 0.6rem 1rem;
-    color: var(--primary-text-color);
-    background: #FFFFFF;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+  .promo{
+    margin-top:1.5rem; 
+    padding:1rem 1.25rem; 
+    border-radius:16px; 
+    background:#e6f3ff; 
+    text-align: center;
   }
-  .cta:hover { background: #f0f0ed; transform: translateY(-2px); }
+  .promo-text { color: #004085; font-size: 0.95rem; }
+  .promo-text strong {
+      font-weight: 700;
+      color: #002752;
+  }
+  .promo-text .pulsing-green {
+      color: var(--success-green);
+      font-weight: 800;
+      animation: pulse 2s infinite ease-in-out;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+  
+  .cta-row{display:flex; justify-content: center; gap:10px; margin-top:1rem}
+  .cta{
+      display:inline-flex; 
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration:none;
+      font-weight:600;
+      border:1px solid var(--border-color);
+      border-radius:980px; 
+      padding: 0.6rem 1rem; 
+      color: var(--secondary-text-color); 
+      background: var(--card-bg-color);
+      transition: all 0.2s ease;
+  }
+  .cta:hover{background:#f0f0ed; border-color: #b0b0b0;}
   
   /* --- 8. Loading Spinner --- */
-  .loading[hidden] { display:none !important; }
-  .loading {
-    position:absolute; inset:0;
-    background:rgba(255,255,255,.6);
-    backdrop-filter:blur(4px);
-    -webkit-backdrop-filter:blur(4px);
+  .loading[hidden]{display:none !important;}
+  .loading{
+    position:absolute; inset:0; 
+    background:rgba(255,255,255,.7); 
+    backdrop-filter:blur(2px);
     border-radius:24px;
-    display:flex; align-items:center; justify-content:center; gap:10px; z-index:5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    z-index:5;
     color: var(--primary-text-color);
-  }
-  .spinner {
-    width:20px; height:20px; border-radius:50%;
-    border:3px solid rgba(10, 132, 255, 0.2);
-    border-top-color: var(--accent-color-start);
-    animation:spin .9s linear infinite;
-  }
-  @keyframes spin { to { transform:rotate(360deg) } }
-
-  /* --- 9. Footer Styling --- */
-  .footer { text-align: center; padding: 20px 0 40px; }
-  .footer a.brand-link {
-    text-decoration: none;
     font-weight: 500;
-    font-size: 1rem;
-    display: block;
-    margin-bottom: 4px;
-    /* Apply shiny effect to footer link */
-    color: var(--accent-color-start);
-    position: relative;
   }
-  .footer a.brand-link:hover { opacity: 0.8; }
-  .footer-subtext { font-size: 0.9rem; color: var(--secondary-text-color); margin-bottom: 12px; }
-  .terms-link {
-    font-size: 0.9rem;
-    color: var(--secondary-text-color);
+  .spinner{
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      border:3px solid rgba(10, 132, 255, 0.2);
+      border-top-color:var(--accent-color-start);
+      animation:spin .9s linear infinite
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  
+  /* --- 9. Footer --- */
+  .footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto;
+  }
+  .footer a {
     text-decoration: none;
+    color: var(--secondary-text-color);
+    font-weight: 500;
+    font-size: 14px;
+    transition: color 0.2s ease;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .footer a:hover { color: var(--primary-text-color); }
+  .footer .brand-link {
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent-color-start), var(--accent-color-end), var(--accent-color-start));
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shine 10s infinite linear;
+  }
+  @keyframes shine { to { background-position: -200% 0; } }
+  
+  .footer-subtext {
+    font-size: 12px;
+    color: var(--secondary-text-color);
+    opacity: 0.7;
+    margin-bottom: 12px;
+  }
+  .terms-link {
+    font-size: 12px;
+    color: var(--secondary-text-color);
+    text-decoration: underline;
     cursor: pointer;
-    background: none; border: none; padding: 0;
+    background: none;
+    border: none;
+    padding: 0;
     font-family: inherit;
   }
-  .terms-link:hover { color: var(--accent-color-start); text-decoration: underline; }
-
-  @keyframes shiny-effect {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-
-  /* --- 10. Modal Styling --- */
+  .terms-link:hover { color: var(--primary-text-color); }
+  
+  /* --- 10. Modal Styles --- */
   .modal-overlay {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    display: flex; align-items: center; justify-content: center; z-index: 100;
-    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
   }
-  .modal-overlay.visible { opacity: 1; pointer-events: auto; }
+  .modal-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
   .modal-box {
     background: var(--card-bg-color);
-    padding: 2rem;
-    border-radius: 16px;
+    padding: 24px;
+    border-radius: 24px;
     max-width: 500px;
     width: calc(100% - 36px);
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
     border: 1px solid var(--border-color);
     transform: scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: transform 0.3s ease;
   }
   .modal-overlay.visible .modal-box { transform: scale(1); }
-  .modal-box h2 { margin: 0 0 1rem; font-size: 1.5rem; }
+  .modal-box h2 { margin: 0 0 10px; }
   .modal-box p, .modal-box ul {
     color: var(--secondary-text-color);
-    line-height: 1.7;
-    font-size: 1rem;
+    line-height: 1.6;
+    font-size: 15px;
   }
   .modal-box ul { padding-left: 20px; }
   .modal-box li { margin-bottom: 8px; }
   .modal-actions {
-    margin-top: 1.5rem;
+    margin-top: 20px;
+    text-align: right;
     display: flex;
     gap: 10px;
     justify-content: flex-end;
   }
-  button.ghost {
-    background-color: var(--bg-color);
-    color: var(--primary-text-color);
-    border: 1px solid var(--border-color);
-    padding: 0.6rem 1rem;
-    border-radius: 980px;
-    font-weight: 500;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+  .modal-actions .ghost {
+      background: #e9e9e7;
+      color: var(--primary-text-color);
+      border: 1px solid var(--border-color);
+      padding: 10px 15px;
   }
-  button.ghost:hover {
-    background-color: #e9e9e7;
-  }
-  .legal-modal { z-index: 101; }
-
-  @keyframes glow-pulse {
-    0%, 100% {
-      box-shadow: 0 0 20px rgba(10, 132, 255, 0.2), 0 10px 30px rgba(0,0,0,0.07);
-    }
-    50% {
-      box-shadow: 0 0 40px rgba(10, 132, 255, 0.4), 0 10px 30px rgba(0,0,0,0.07);
-    }
-  }
-
-  @media (max-width: 400px) {
-    h1 {
-      font-size: 1.75rem;
-    }
-    .card {
-      padding: 2rem 1.5rem;
-    }
-  }
+  .modal-actions .ghost:hover{background: #dcdcdc;}
 </style>
 </head>
 <body>
 <div id="particles-js"></div>
-
 <div class="wrap">
-  <div class="card" id="formCard" aria-live="polite">
-    <div class="loading" id="loading" hidden>
-      <div class="spinner" aria-hidden="true"></div><div>Submitting…</div>
-    </div>
-
-    <h1 id="animated-title">Welcome to Hamilton Deli & Grill Rewards!</h1>
+  <div class="screen-wrapper">
+      <div class="card screen" id="formCard" aria-live="polite">
+        <div class="loading" id="loading" hidden>
+          <div class="spinner" aria-hidden="true"></div><div>Submitting…</div>
+        </div>
+        
+        <h1>
+            <div>
+                <div class="title-word">Welcome to Hamilton</div>
+                <div class="title-word">Deli & Grill Rewards!</div>
+            </div>
+        </h1>
+        <div class="sub">Earn points and redeem them anytime. Just use your phone number at the counter to get started!</div>
     
-    <div class="sub">Earn points and redeem them anytime. Just use your phone number at the counter to get started!</div>
-
-    <div class="banner warn" id="warnBanner"></div>
-    <div class="banner err"  id="errBanner"></div>
-    <div class="banner ok"   id="okBanner"></div>
-
-    <form id="theForm" novalidate>
-      <div class="field">
-        <label for="phone">Phone number *</label>
-        <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567"/>
-        <div class="hint">Your 10-digit number is used to look you up.</div>
-      </div>
-
-      <div class="field">
-        <label for="name">Full name *</label>
-        <input id="name" type="text" autocomplete="name" placeholder="Jane Doe"/>
-      </div>
-
-      <div class="field">
-        <label for="birthday">Birthday *</label>
-        <input id="birthday" type="text" inputmode="numeric" placeholder="YYYY-MM-DD" maxlength="10"/>
-        <div class="hint">Format: <b>YYYY-MM-DD</b>. Hyphens insert automatically.</div>
-      </div>
-
-      <div class="field">
-        <label for="email">Email (optional)</label>
-        <input id="email" type="email" autocomplete="email" placeholder="jane@example.com"/>
-      </div>
-
-      <div class="field" style="margin-top: 1.5rem;">
-        <label class="row">
-          <input id="smsOptin" type="checkbox" checked/>
-          <span>Send me exclusive offers & rewards via SMS</span>
-        </label>
-      </div>
-
-      <div class="actions">
-        <button class="primary" id="btnJoin" type="submit">
-          <span class="btn-label">Join Rewards Program</span>
-        </button>
-      </div>
-    </form>
+        <div class="banner warn" id="warnBanner"></div>
+        <div class="banner err"  id="errBanner"></div>
+        <div class="banner ok"   id="okBanner"></div>
     
-    <!-- $5 review bonus promo -->
-    <div class="promo">
-      <span class="promo-highlight-pulse">$5 off your next purchase:</span> after you join, <u>leave us a Google review</u> and show the cashier—your bonus will be applied at checkout.
-      <div class="cta-row">
-        <a class="cta" id="reviewLink" target="_blank" rel="noopener"><i class="fa-brands fa-google"></i> Leave a Google Review</a>
-      </div>
-    </div>
-  </div>
+        <form id="theForm" novalidate>
+          <div class="field">
+            <label for="phone">Phone number *</label>
+            <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567"/>
+            <div class="hint">Your 10-digit number is used to look you up.</div>
+          </div>
+    
+          <div class="field">
+            <label for="name">Full name *</label>
+            <input id="name" type="text" autocomplete="name" placeholder="Jane Doe"/>
+          </div>
+    
+          <div class="field">
+            <label for="birthday">Birthday *</label>
+            <input id="birthday" type="text" inputmode="numeric" placeholder="yyyy-mm-dd" maxlength="10"/>
+            <div class="hint">Format: <b>YYYY-MM-DD</b>. Hyphens insert automatically.</div>
+          </div>
+    
+          <div class="field">
+            <label for="email">Email (optional)</label>
+            <input id="email" type="email" autocomplete="email" placeholder="jane@example.com"/>
+          </div>
+    
+          <div class="field">
+            <label class="row">
+              <input id="smsOptin" type="checkbox" checked/>
+              <span>Send me exclusive offers & rewards via SMS</span>
+            </label>
+          </div>
+    
+          <div class="actions">
+            <button class="primary" id="btnJoin" type="submit">
+              <span class="btn-label">Join Rewards Program</span>
+            </button>
+          </div>
 
-  <!-- Success card -->
-  <div class="card" id="doneCard" style="display:none" aria-live="polite">
-    <h1 class="shiny-text" data-text="You’re all set! 🎉">You’re all set! 🎉</h1>
-    <p class="sub">
-      Tell the cashier your phone number at checkout. If you leave us a review now and show it to them, you’ll receive <b>$5 off</b> your next purchase.
-    </p>
-    <div class="cta-row" style="justify-content: center;">
-      <a class="cta" id="reviewLink2" target="_blank" rel="noopener"><i class="fa-brands fa-google"></i> Leave a Google Review</a>
-      <a class="cta" id="backBtn" href="#" role="button"><i class="fas fa-arrow-left"></i> Back to form</a>
-    </div>
+           <!-- $5 review bonus promo -->
+            <div class="promo">
+              <p class="promo-text">
+                  <span class="pulsing-green">$5 off your next purchase:</span> after you join, 
+                  <a href="#" id="reviewLink" target="_blank" rel="noopener" style="color: inherit;">leave us a Google review</a> 
+                  and show the cashier—your bonus will be applied at checkout.
+              </p>
+              <div class="cta-row">
+                <a class="cta" id="reviewLinkCta" target="_blank" rel="noopener"><i class="fab fa-google" style="color: #4285F4;"></i> Leave a Google Review</a>
+              </div>
+            </div>
+        </form>
+      </div>
+    
+      <!-- Success card -->
+      <div class="card screen hidden" id="doneCard" aria-live="polite">
+        <div class="banner ok" style="display:block">You’re all set! 🎉</div>
+        <p class="sub" style="color: var(--primary-text-color)">
+          Tell the cashier your phone number at checkout. If you leave us a review now and show it to the cashier, you’ll receive <b>$5 off</b> your next purchase.
+        </p>
+        <div class="cta-row">
+          <a class="cta" id="reviewLink2" target="_blank" rel="noopener"><i class="fab fa-google" style="color: #4285F4;"></i> Leave a Google Review</a>
+          <a class="cta" id="backBtn" href="#" role="button">← Back to form</a>
+        </div>
+      </div>
   </div>
 </div>
 
 <div class="footer">
-  <a href="https://www.princeton-ai.com" target="_blank" rel="noopener noreferrer" class="brand-link shiny-text" data-text="Powered by Princeton-AI.com">
+  <a href="https://www.princeton-ai.com" target="_blank" rel="noopener noreferrer" class="brand-link">
     Powered by Princeton-AI.com
   </a>
   <div class="footer-subtext">Contact us to bring AI to your small business!</div>
@@ -460,8 +471,10 @@
       <li>We reserve the right to modify the terms of the rewards program at any time.</li>
     </ul>
     <div class="modal-actions">
-       <button class="terms-link" id="legalBtn" style="margin-right: auto;">View Full Legal Terms</button>
-       <button class="ghost" id="closeModalBtn">Close</button>
+      <button class="ghost" id="closeModalBtn">Close</button>
+    </div>
+    <div style="text-align: center; margin-top: 15px;">
+        <button class="terms-link" id="legalBtn">View Full Legal Terms</button>
     </div>
   </div>
 </div>
@@ -477,68 +490,18 @@
     </div>
   </div>
 
-<!-- Particles.js library -->
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    // --- NEW Split Text Title Animation ---
-    const animatedTitle = document.getElementById('animated-title');
-    if (animatedTitle) {
-        const originalText = animatedTitle.textContent.trim();
-        animatedTitle.innerHTML = ''; // Clear original text to rebuild
-
-        let charDelay = 0;
-        // Split text into words to handle wrapping correctly
-        originalText.split(' ').forEach(word => {
-            const wordContainer = document.createElement('span');
-            wordContainer.style.display = 'inline-block'; // Ensures word doesn't break
-
-            word.split('').forEach(char => {
-                const charSpan = document.createElement('span');
-                charSpan.className = 'char';
-                charSpan.textContent = char;
-                charSpan.style.animationDelay = `${charDelay}s`;
-                wordContainer.appendChild(charSpan);
-                charDelay += 0.04;
-            });
-            animatedTitle.appendChild(wordContainer);
-
-            // Add a space after the word
-            animatedTitle.appendChild(document.createTextNode(' '));
-        });
-    }
-
-    // --- Interactive Backgrounds (from Princeton AI theme) ---
-    particlesJS('particles-js', {
-        "particles": {
-            "number": { "value": 100, "density": { "enable": true, "value_area": 800 } },
-            "color": { "value": "#0A84FF" },
-            "shape": { "type": "circle" },
-            "opacity": { "value": 0.5, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
-            "size": { "value": 3, "random": true },
-            "line_linked": { "enable": false },
-            "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
-        },
-        "interactivity": {
-            "detect_on": "canvas",
-            "events": { "onhover": { "enable": false, "mode": "bubble" }, "onclick": { "enable": false }, "resize": true },
-        },
-        "retina_detect": true
-    });
-});
-
-/* ===== CONFIG (NO CHANGE) ===== */
+/* ===== CONFIG ===== */
 const SIGNUP_WEBHOOK = 'https://princetonai.app.n8n.cloud/webhook/cashier-signup';
 const GOOGLE_REVIEW_URL = 'https://www.google.com/search?q=Hamilton+Deli+%26+Grill+Reviews';
-/* =============================== */
+/* =================== */
 
-document.getElementById('reviewLink').href  = GOOGLE_REVIEW_URL;
+document.getElementById('reviewLink').href = GOOGLE_REVIEW_URL;
+document.getElementById('reviewLinkCta').href = GOOGLE_REVIEW_URL;
 document.getElementById('reviewLink2').href = GOOGLE_REVIEW_URL;
 
-// --- Helper Functions & Form Logic (NO CHANGE) ---
 function $(q){ return document.querySelector(q); }
-function show(el, on){ el.style.display = on ? 'block' : 'none'; }
 function digits10(v){ const d = String(v||'').replace(/\D/g,''); return d.length>=10 ? d.slice(-10) : null; }
 function clearBanners(){ ['okBanner','warnBanner','errBanner'].forEach(id => { const el = $('#'+id); el.style.display='none'; el.textContent=''; }); }
 function setBanner(id, cls, msg){ const el = $('#'+id); el.className = 'banner ' + cls; el.textContent = msg; el.style.display='block'; }
@@ -554,6 +517,18 @@ function setBanner(id, cls, msg){ const el = $('#'+id); el.className = 'banner '
   });
 })();
 
+const ALL_SCREENS = ['formCard', 'doneCard'];
+function showScreen(screenId) {
+    ALL_SCREENS.forEach(id => {
+        const el = $(`#${id}`);
+        if (id === screenId) {
+            el.classList.remove('hidden');
+        } else {
+            el.classList.add('hidden');
+        }
+    });
+}
+
 async function submitForm(e){
   e.preventDefault();
   clearBanners();
@@ -568,7 +543,8 @@ async function submitForm(e){
   if(!name){ setBanner('warnBanner','warn','Please enter your full name.'); return; }
   if(!/^\d{4}-\d{2}-\d{2}$/.test(bday)){ setBanner('warnBanner','warn','Birthday must be YYYY-MM-DD.'); return; }
 
-  const btn = $('#btnJoin'); const label = btn.querySelector('.btn-label');
+  // Loading state
+  const btn = $('#btnJoin');
   $('#loading').hidden = false; btn.disabled = true;
 
   try{
@@ -580,8 +556,8 @@ async function submitForm(e){
     if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
 
-    show($('#formCard'), false);
-    show($('#doneCard'), true);
+    // Success -> show done card with review CTA
+    showScreen('doneCard');
   }catch(err){
     console.error(err);
     setBanner('errBanner','err','Sign-up failed. Please try again.');
@@ -591,9 +567,9 @@ async function submitForm(e){
 }
 
 $('#theForm').addEventListener('submit', submitForm);
-$('#backBtn').addEventListener('click', (e)=>{ e.preventDefault(); show($('#doneCard'), false); show($('#formCard'), true); });
+$('#backBtn').addEventListener('click', (e)=>{ e.preventDefault(); showScreen('formCard'); });
 
-// --- Modal Logic (NO CHANGE) ---
+// Modal Logic
 const termsModal = $('#termsModal');
 const termsBtn = $('#termsBtn');
 const closeModalBtn = $('#closeModalBtn');
@@ -632,13 +608,42 @@ legalModal.addEventListener('click', (e) => {
     }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    showScreen('formCard'); // Set initial screen
+    // Title Animation
+    const title = document.querySelector('h1');
+    const lines = title.querySelectorAll('.title-word');
+    let totalDelay = 0;
+    lines.forEach((line, lineIndex) => {
+        const text = line.textContent;
+        line.innerHTML = '';
+        text.split('').forEach((char, charIndex) => {
+            const span = document.createElement('span');
+            span.className = 'title-char';
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.style.animationDelay = `${totalDelay + charIndex * 0.03}s`;
+            line.appendChild(span);
+        });
+        totalDelay += text.length * 0.03 + 0.1; // Add delay between lines
+    });
+
+    // Particles JS
+    particlesJS('particles-js', {
+        "particles": {
+            "number": { "value": 40, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#0A84FF" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.4, "random": true, "anim": { "enable": false } },
+            "size": { "value": 3, "random": true },
+            "line_linked": { "enable": false },
+            "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+        },
+        "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": false }, "onclick": { "enable": false }, "resize": true } },
+        "retina_detect": true
+    });
+});
+
 </script>
 </body>
 </html>
-
-
-
-
-
-
 
