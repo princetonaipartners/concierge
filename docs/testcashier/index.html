@@ -30,7 +30,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
   body {
-      padding-bottom: 40px; /* Space for the SOP card */
+      padding-bottom: 40px;
   }
   
   #particles-js {
@@ -44,26 +44,12 @@
   
   .wrap{max-width:940px;margin:32px auto;padding:0 18px}
   
-  .header-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      color: var(--secondary-text-color);
-      font-size: 14px;
-      font-weight: 500;
-      margin-bottom: 16px;
-      position: relative;
-  }
-  .weather-widget {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-  }
-
   .live-clock {
     text-align: right;
+    color: var(--secondary-text-color);
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 16px;
   }
   
   .card{
@@ -94,22 +80,12 @@
     font-size: 28px;
     letter-spacing:-.5px;
     color: var(--accent-color-start);
-    min-height: 40px; /* Reserve space to prevent layout shift */
   }
-  h1 .char {
-    display: inline-block;
-    opacity: 0;
-    transform: translateY(-20px);
-    animation: char-enter 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
-  }
-  @keyframes char-enter { to { opacity: 1; transform: translateY(0); } }
-
   h2{margin:0 0 6px;font-weight:700; font-size: 24px;}
   .sub{color: var(--secondary-text-color);margin-bottom:24px; font-size: 16px;}
 
   .grid{display:grid;gap:18px}
   .two{grid-template-columns:1fr 1fr}
-  .three{grid-template-columns:1fr 1fr 1fr}
   
   .field{display:flex;flex-direction:column;gap:8px}
   label{font-weight:700; font-size: 15px; color: var(--primary-text-color);}
@@ -297,8 +273,8 @@
     opacity: 0.6;
     cursor: not-allowed;
   }
-
-  /* --- ACCORDION CARD STYLES (SOP & HOLIDAYS) --- */
+  
+  /* --- ACCORDION CARD STYLES (SOP) --- */
   .accordion-card { padding: 1.5rem 1.5rem 0.5rem; }
   .accordion-toggle {
       background: none;
@@ -322,136 +298,14 @@
       transition: max-height 0.5s ease-in-out;
       padding: 0 0.5rem;
   }
-  .accordion-content.open { max-height: 2000px; /* Large enough to fit content */ }
   .accordion-content h3 { font-size: 1.1rem; margin-top: 1rem; margin-bottom: 0.5rem; color: var(--primary-text-color); }
   .accordion-content p, .accordion-content li { color: var(--secondary-text-color); margin-bottom: 0.5rem; }
   .accordion-content ol, .accordion-content ul { padding-left: 1.5rem; }
   .accordion-content strong { color: var(--primary-text-color); font-weight: 600; }
-  .accordion-content .holiday-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 1rem 0;
-  }
-   .accordion-content .holiday-list li {
-       padding: 0.75rem 0.25rem;
-       border-bottom: 1px solid #e9e9e7;
-       display: flex;
-       justify-content: space-between;
-       align-items: center;
-       gap: 1rem;
-       cursor: pointer;
-       transition: background-color 0.2s ease;
-   }
-   .accordion-content .holiday-list li:hover {
-       background-color: #f9f9f7;
-   }
-   .accordion-content .holiday-list li:last-child {
-       border-bottom: none;
-   }
-   .holiday-name {
-       display: flex;
-       align-items: center;
-       gap: 0.75rem;
-   }
-   .holiday-dot {
-       width: 10px;
-       height: 10px;
-       border-radius: 50%;
-       flex-shrink: 0;
-   }
-   .dot-us { background-color: #0A84FF; }
-   
-   .view-more-toggle {
-       background: none;
-       border: none;
-       color: var(--accent-color-start);
-       font-weight: 600;
-       cursor: pointer;
-       padding: 0.5rem 0;
-       margin-top: 0.5rem;
-       display: flex;
-       align-items: center;
-       gap: 0.5rem;
-   }
-   .view-more-toggle .icon {
-       transition: transform 0.3s ease;
-   }
-   .rest-of-year-holidays {
-       max-height: 0;
-       overflow: hidden;
-       transition: max-height 0.4s ease-in-out;
-   }
   
-  /* --- HOLIDAY MODAL --- */
-  .modal-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(5px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-  }
-  .modal-overlay.visible {
-      opacity: 1;
-      pointer-events: auto;
-  }
-  .modal-card {
-      background: var(--card-bg-color);
-      border-radius: 24px;
-      padding: 2rem;
-      width: 90%;
-      max-width: 500px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      transform: scale(0.95);
-      transition: transform 0.3s ease;
-  }
-  .modal-overlay.visible .modal-card {
-      transform: scale(1);
-  }
-  #modalTitle {
-      font-size: 1.75rem;
-      margin: 0 0 0.5rem;
-      color: var(--primary-text-color);
-  }
-  #modalHistory {
-      color: var(--secondary-text-color);
-      margin-bottom: 1.5rem;
-      line-height: 1.7;
-  }
-  #modalFacts h4 {
-      font-size: 1.1rem;
-      margin-bottom: 0.75rem;
-      color: var(--primary-text-color);
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 0.5rem;
-  }
-  #modalFacts ul {
-      list-style: none;
-      padding-left: 0;
-  }
-  #modalFacts li {
-      padding-left: 1.5rem;
-      position: relative;
-      margin-bottom: 0.75rem;
-  }
-  #modalFacts li::before {
-      content: '★';
-      color: var(--accent-color-start);
-      position: absolute;
-      left: 0;
-      top: 2px;
-  }
-
-
   @media (max-width:800px){
     .two,.three{grid-template-columns:1fr}
-    h1{ font-size: 24px; min-height: 60px; }
+    h1{ font-size: 24px; }
     .card.screen.hidden { width: calc(100% - 36px * 2); }
     .header-info { justify-content: center; text-align: center; }
     .live-clock { text-align: center; }
@@ -461,6 +315,7 @@
 <body>
 <div id="particles-js"></div>
 <div class="wrap">
+  <!-- ICONS -->
   <svg width="0" height="0" style="display:none">
     <symbol id="icon-ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></symbol>
     <symbol id="icon-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.46 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></symbol>
@@ -471,13 +326,11 @@
   </svg>
   
   <div class="header-info">
-      <div id="weatherWidget" class="weather-widget">
-          <i class="fas fa-spinner fa-spin"></i> Loading weather...
-      </div>
       <div id="liveClock" class="live-clock"></div>
   </div>
 
   <div class="screens-container" style="position: relative;">
+    <!-- LOOKUP CARD -->
     <div class="card screen" id="lookupCard" aria-live="polite">
       <div class="loading" id="loadingA" hidden>
         <div class="spinner" aria-hidden="true"></div><div>Working…</div>
@@ -517,6 +370,7 @@
       </div>
     </div>
 
+    <!-- LOG CARD -->
     <div class="card screen hidden" id="logCard" style="display:none" aria-live="polite">
       <div class="loading" id="loadingB" hidden><div class="spinner"></div><div>Finalizing…</div></div>
       <div id="bannerB" class="banner"></div>
@@ -583,6 +437,7 @@
       </div>
     </div>
 
+    <!-- CONFIRM CARD -->
     <div class="card screen hidden" id="doneCard" style="display:none" aria-live="polite">
       <div class="banner ok" style="display:flex" id="doneMsg">
         <svg class="icon"><use href="#icon-ok" /></svg>
@@ -599,26 +454,6 @@
       <div class="actions"><button class="primary" id="btnReset">Start next customer</button></div>
     </div>
   </div>
-  
-  <div class="card accordion-card">
-    <button class="accordion-toggle" id="holidayToggle">
-        <h2><i class="fas fa-calendar-alt"></i> Upcoming Holidays</h2>
-        <i class="fas fa-chevron-down icon"></i>
-    </button>
-    <div class="accordion-content" id="holidayContent">
-        <h3>Next 30 Days</h3>
-        <ul class="holiday-list" id="nextMonthHolidayList"><li>No holidays in the next 30 days.</li></ul>
-        
-        <button class="view-more-toggle" id="viewMoreHolidays">
-            <span>View Next 3 Months</span>
-            <i class="fas fa-chevron-down icon"></i>
-        </button>
-        
-        <div class="rest-of-year-holidays" id="restOfYearHolidays">
-             <ul class="holiday-list" id="restOfYearHolidayList"></ul>
-        </div>
-    </div>
-  </div>
 
   <div class="card accordion-card">
     <button class="accordion-toggle" id="sopToggle">
@@ -626,76 +461,47 @@
         <i class="fas fa-chevron-down icon"></i>
     </button>
     <div class="accordion-content" id="sopContent">
-        <h3>Procedure 1: First-Time Customer</h3>
+        <h3>Procedure 1: First-Time Customer Experience</h3>
         <ol>
-            <li><strong>Initial Lookup:</strong> Greet customer and enter their 10-digit phone number. Press "Lookup / Start Visit".</li>
-            <li><strong>New Member Signup:</strong> If the app shows "Customer not enrolled," direct them to the QR code to sign up. Remind them about earning points and the $5 review bonus.</li>
-            <li><strong>Complete First Transaction:</strong> After they sign up, look up their number again. Proceed to the returning customer steps below.</li>
+            <li><strong>Initial Lookup:</strong> Greet the customer and ask for their 10-digit phone number to see if they are in the system.</li>
+            <li><strong>New Member Signup:</strong> If the app displays a "Customer not enrolled" message, inform the customer and point them to the QR code to sign up.</li>
+            <li><strong>Complete Their First Transaction:</strong> After they've signed up, enter their phone number again to find their new account and proceed.</li>
         </ol>
 
-        <h3>Procedure 2: Returning Customer</h3>
+        <h3>Procedure 2: Returning Customer Experience</h3>
         <ol>
-            <li><strong>Member Lookup:</strong> Enter their 10-digit phone number and press "Lookup". The app will load their profile.</li>
-            <li><strong>Enter Order & Apply Rewards:</strong>
-                <ul>
-                    <li>Enter the pre-tax order total in the "Order total ($)" field.</li>
-                    <li><strong>Redeeming Points:</strong> Ask if they want to use their available points for a discount. Enter the amount or press "Redeem Max".</li>
-                    <li><strong>Review Bonus:</strong> If the "Review verified" checkbox is active, ask if they've left a review. If they show you, check the box to apply a $5 discount.</li>
-                    <li><strong>Order Categories:</strong> Tap all categories that apply to their purchase.</li>
-                </ul>
-            </li>
-            <li><strong>Finalize Visit:</strong> Confirm the final "Net to charge" with the customer, then press "Finalize visit". Press "Start next customer" to reset.</li>
+            <li><strong>Member Lookup:</strong> Enter the customer's 10-digit phone number to load their profile.</li>
+            <li><strong>Enter Order and Apply Rewards:</strong> Input the pre-tax total. Ask if they want to redeem points and check for the review bonus if applicable.</li>
+            <li><strong>Finalize the Visit:</strong> Confirm the "Net to charge" with the customer and press "Finalize visit".</li>
         </ol>
 
-        <h3>Points System Rules</h3>
+        <h3>Points System Rules & Details</h3>
         <ul>
-            <li><strong>Earning:</strong> 1 point per $1 spent (pre-tax).</li>
+            <li><strong>Earning:</strong> 1 point for every $1 spent on pre-tax totals.</li>
             <li><strong>Redeeming:</strong> 100 points = $5.00 discount.</li>
-            <li>Points have no cash value and terms can be modified.</li>
+            <li>Points have no cash value.</li>
         </ul>
 
         <h3>Frequently Asked Questions (FAQ)</h3>
-        <p><strong>What if the "Finalize visit" button is disabled?</strong><br>
-        The customer has already checked in today. Only one visit per day is allowed.</p>
-        <p><strong>Do points expire?</strong><br>
-        No, points do not expire.</p>
-       <p><strong>Customer wants to update their info?</strong><br>
-        They need to sign up again. For issues, text (609)-529-0509.</p>
+        <p><strong>Customer doesn't know if they are a member?</strong> Always use the lookup tool first.</p>
+        <p><strong>"Finalize visit" button is disabled?</strong> The customer has already checked in today.</p>
+        <p><strong>Do points expire?</strong> No, points do not expire.</p>
+         <p><strong>Customer wants to update their info?</strong> They need to sign up again. For issues, text (609)-529-0509.</p>
     </div>
   </div>
-
 </div>
-
-<div class="modal-overlay" id="holidayModal">
-    <div class="modal-card">
-        <h3 id="modalTitle">Holiday Name</h3>
-        <p id="modalHistory">A brief history of the holiday.</p>
-        <div id="modalFacts">
-            <h4>Fun Facts</h4>
-            <ul>
-                <li>Fact 1</li>
-                <li>Fact 2</li>
-                <li>Fact 3</li>
-            </ul>
-        </div>
-        <div class="actions" style="justify-content: flex-end;">
-            <button class="ghost" id="modalClose">Close</button>
-        </div>
-    </div>
-</div>
-
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
-/* ===================== CONFIG (FROM WORKING VERSION) ===================== */
+/* ===================== CONFIG ===================== */
 const WEBHOOK_LOOKUP  = 'https://princetonai.app.n8n.cloud/webhook/cashier/lookup';
 const WEBHOOK_FINALIZE= 'https://princetonai.app.n8n.cloud/webhook/cashier/finalize';
 
-const STORE_ID    = 'hamilton-main';  // optional, sent to n8n
-const CASHIER_ID = 'register-1';     // optional, sent to n8n
+const STORE_ID    = 'hamilton-main';     // optional, sent to n8n
+const CASHIER_ID = 'register-1';       // optional, sent to n8n
 
 const SIGNUP_URL = 'https://princetonaipartners.github.io/concierge/signup/';
-/* ======================================================================== */
+/* ================================================== */
 
 const CATEGORIES = ['Grocery','Convenience','Coffee','Deli/food','Krispy Chicken','Other'];
 const REWARD_CYCLE = 5;
@@ -703,7 +509,7 @@ const DOLLARS_PER_POINT = 0.05; // 100 points = $5
 
 const $ = q => document.querySelector(q);
 const money = v => (Number.isFinite(+v) ? (+v).toLocaleString(undefined,{style:'currency',currency:'USD'}) : '$0.00');
-const clamp  = (v,min,max)=> Math.min(max, Math.max(min, v));
+const clampValue  = (v,min,max)=> Math.min(max, Math.max(min, v));
 const clamp0 = v => Math.max(0, v||0);
 const digits10 = v => {
   const d = String(v||'').replace(/\D/g,'');
@@ -765,7 +571,7 @@ function recompute(){
   const maxPtsBySubtotal = maxRedeemPtsGivenSubtotal(subtotal, !!reviewUsed);
   const desiredPts = Number($('#redeemPts').value || 0);
   const cap = Math.min(state.points, maxPtsBySubtotal);
-  state.redeemPts = clamp(desiredPts, 0, cap);
+  state.redeemPts = clampValue(desiredPts, 0, cap);
   if (desiredPts !== state.redeemPts) $('#redeemPts').value = state.redeemPts;
 
   const ptsDollars = state.redeemPts * DOLLARS_PER_POINT;
@@ -815,11 +621,14 @@ function showScreen(screenId) {
         } else {
             el.classList.add('hidden');
             el.addEventListener('transitionend', () => {
-                if (el.classList.contains('hidden')) el.style.display = 'none';
+                if (el.classList.contains('hidden')) {
+                    el.style.display = 'none';
+                }
             }, { once: true });
         }
     });
 }
+
 
 function resetAll(){
   state = { visitId:null, phone10:null, customer:null, eligibleNow:false, alreadyToday:false, smsOptin:false, points:0, reviewEligible:false, redeemPts:0 };
@@ -838,15 +647,45 @@ function resetAll(){
 
 function updateClock() {
     const now = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', second: '2-digit' };
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' };
     $('#liveClock').textContent = now.toLocaleDateString('en-US', options);
 }
 
-// Initial setup
-buildTiles();
-resetAll();
-updateClock();
-setInterval(updateClock, 1000);
+document.addEventListener('DOMContentLoaded', () => {
+    // Initial setup
+    buildTiles();
+    resetAll();
+    updateClock();
+    setInterval(updateClock, 1000);
+    
+    // Accordion Toggles
+    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            toggle.classList.toggle('active');
+            const content = toggle.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    });
+
+    // Particles JS
+    particlesJS('particles-js', {
+        "particles": {
+            "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#0A84FF" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.4, "random": true },
+            "size": { "value": 3, "random": true },
+            "line_linked": { "enable": false },
+            "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+        },
+        "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": false }, "onclick": { "enable": false }, "resize": true } },
+        "retina_detect": true
+    });
+});
 
 
 /* ---------- Lookup ---------- */
@@ -1014,247 +853,7 @@ $('#btnFinalize').addEventListener('click', async ()=>{
 $('#btnBack').addEventListener('click', resetAll);
 $('#btnReset').addEventListener('click', resetAll);
 
-/* ======================================================================== */
-/* ---------- NEW UI FEATURES (from new version) ---------- */
-/* ======================================================================== */
-
-document.addEventListener('DOMContentLoaded', () => {
-    // Title Animation
-    const title = document.querySelector('h1');
-    const text = title.textContent;
-    title.innerHTML = ''; // Clear original text
-    text.split('').forEach((char, index) => {
-        const span = document.createElement('span');
-        span.className = 'char';
-        span.textContent = char === ' ' ? '\u00A0' : char; // Use non-breaking space
-        span.style.animationDelay = `${index * 0.03}s`;
-        title.appendChild(span);
-    });
-
-    // Accordion Toggles
-    document.querySelectorAll('.accordion-toggle').forEach(toggle => {
-        toggle.addEventListener('click', () => {
-            toggle.classList.toggle('active');
-            const content = toggle.nextElementSibling;
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-            } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-            }
-        });
-    });
-    
-    // Particles JS
-    particlesJS('particles-js', {
-        "particles": {
-            "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
-            "color": { "value": "#0A84FF" },
-            "shape": { "type": "circle" },
-            "opacity": { "value": 0.4, "random": true },
-            "size": { "value": 3, "random": true },
-            "line_linked": { "enable": false },
-            "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
-        },
-        "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": false }, "onclick": { "enable": false }, "resize": true } },
-        "retina_detect": true
-    });
-    
-    // --- Weather Widget ---
-    const fetchWeather = async () => {
-        const apiKey = 'd8f28cb492b455f53e6d203679f2252a'; 
-        const lat = 40.2222; // Latitude for Hamilton, NJ
-        const lon = -74.6868; // Longitude for Hamilton, NJ
-        const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`;
-        const widget = $('#weatherWidget');
-
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('Weather data not available.');
-            const data = await response.json();
-
-            const temp = Math.round(data.main.temp);
-            const description = data.weather[0].description.replace(/\b\w/g, l => l.toUpperCase()); // Capitalize words
-            const iconCode = data.weather[0].icon;
-            
-            const iconMap = {
-                '01d': 'fa-sun', '01n': 'fa-moon', '02d': 'fa-cloud-sun', '02n': 'fa-cloud-moon',
-                '03d': 'fa-cloud', '03n': 'fa-cloud', '04d': 'fa-cloud', '04n': 'fa-cloud',
-                '09d': 'fa-cloud-showers-heavy', '09n': 'fa-cloud-showers-heavy', '10d': 'fa-cloud-sun-rain', '10n': 'fa-cloud-moon-rain',
-                '11d': 'fa-cloud-bolt', '11n': 'fa-cloud-bolt', '13d': 'fa-snowflake', '13n': 'fa-snowflake',
-                '50d': 'fa-smog', '50n': 'fa-smog',
-            };
-            const iconClass = iconMap[iconCode] || 'fa-question-circle';
-
-            widget.innerHTML = `<i class="fas ${iconClass}"></i> ${temp}°F, ${description}`;
-        } catch (error) {
-            console.error("Weather fetch error:", error);
-            widget.textContent = 'Weather Unavailable';
-        }
-    }
-    
-    // --- Holiday Widget ---
-    const initHolidayWidget = () => {
-        const holidays = [
-             // 2024
-            { date: '2024-10-14', name: 'Columbus Day', type: 'us', history: 'Commemorates Christopher Columbus\'s arrival in the Americas in 1492. It became a federal holiday in 1937.', facts: ['Many cities and states celebrate Indigenous Peoples\' Day instead.', 'It is celebrated in other countries as "Día de la Raza".', 'The first celebration was in 1792, 300 years after his arrival.'] },
-            { date: '2024-10-31', name: 'Halloween', type: 'us', history: 'Originating from the ancient Celtic festival of Samhain, people would light bonfires and wear costumes to ward off ghosts.', facts: ['The term "trick-or-treat" dates back to the early 20th century.', 'The largest pumpkin ever recorded weighed over 2,600 pounds.', 'Scotland and Ireland still practice many ancient Halloween traditions.'] },
-            { date: '2024-11-11', name: 'Veterans Day', type: 'us', history: 'Originally called "Armistice Day" to mark the end of World War I, it was changed to Veterans Day in 1954 to honor all veterans.', facts: ['It is a federal holiday and a state holiday in all states.', 'It is always observed on November 11th, regardless of the day of the week.', 'Other countries celebrate a similar holiday, like Remembrance Day.'] },
-            { date: '2024-11-28', name: 'Thanksgiving', type: 'us', history: 'Celebrates the harvest feast shared by the Pilgrims and the Wampanoag people in 1621. Abraham Lincoln declared it a national holiday in 1863.', facts: ['The first Macy\'s Thanksgiving Day Parade featured live animals from the Central Park Zoo.', 'About 46 million turkeys are eaten on Thanksgiving each year.', 'The tradition of "pardoning" a turkey began with President George H.W. Bush in 1989.'] },
-            { date: '2024-12-25', name: 'Christmas Day', type: 'us', history: 'A Christian holiday celebrating the birth of Jesus Christ. Many of its traditions, like Christmas trees, have pre-Christian origins.', facts: ['The song "Jingle Bells" was originally written for Thanksgiving.', 'Alabama was the first state to officially recognize Christmas in 1836.', 'The image of Santa Claus was popularized by a Coca-Cola advertising campaign in the 1930s.'] },
-            // 2025
-            { date: '2025-01-01', name: 'New Year\'s Day', type: 'us', history: 'The earliest recorded New Year\'s celebration dates back to ancient Babylon. It marks the start of a new year on the Gregorian calendar.', facts: ['The Times Square ball drop has been a tradition since 1907.', 'Eating black-eyed peas on New Year\'s is thought to bring good luck.', 'Many people make "New Year\'s resolutions" to improve themselves.'] },
-            { date: '2025-01-20', name: 'MLK Jr. Day', type: 'us', history: 'Honors the life and legacy of civil rights leader Martin Luther King Jr. It was signed into law in 1983 and first observed in 1986.', facts: ['It is a day of national service, often referred to as a "day on, not a day off".', 'The holiday is observed on the third Monday of January.', 'Stevie Wonder\'s song "Happy Birthday" was instrumental in the campaign for the holiday.'] },
-            { date: '2025-02-14', name: 'Valentine\'s Day', type: 'us', history: 'Named after St. Valentine, a Roman priest. It evolved into a day of romance from the 14th century onwards.', facts: ['Over 1 billion Valentine\'s Day cards are sent each year.', 'Richard Cadbury produced the first box of chocolates for this holiday in the late 1800s.', 'The phrase "wearing your heart on your sleeve" has medieval origins.'] },
-            { date: '2025-02-17', name: 'Presidents\' Day', type: 'us', history: 'Originally established to celebrate George Washington\'s birthday. It was moved to the third Monday in February and now honors all U.S. presidents.', facts: ['It never falls on the actual birthday of any American president.', 'It\'s a popular day for car and mattress sales.', 'The official name is still "Washington\'s Birthday" for federal purposes.'] },
-            { date: '2025-03-17', name: 'St. Patrick\'s Day', type: 'us', history: 'A cultural and religious holiday celebrating the patron saint of Ireland. It became a public celebration in the United States in the 18th century.', facts: ['The Chicago River is dyed green every year for the celebration.', 'The original color associated with St. Patrick was blue.', 'The world\'s shortest St. Patrick\'s Day parade is in Hot Springs, Arkansas.'] },
-            { date: '2025-04-20', name: 'Easter Sunday', type: 'us', history: 'The most important Christian festival, celebrating the resurrection of Jesus Christ. The tradition of Easter eggs symbolizes new life.', facts: ['Americans spend over $2 billion on Easter candy.', 'The White House Easter Egg Roll tradition was started by President Rutherford B. Hayes.', 'The idea of the Easter Bunny originated in Germany.'] },
-            { date: '2025-05-26', name: 'Memorial Day', type: 'us', history: 'Originally known as Decoration Day, it originated after the Civil War to commemorate fallen soldiers. It became a federal holiday in 1971.', facts: ['It is traditionally seen as the unofficial start of summer.', 'The "National Moment of Remembrance" occurs at 3 p.m. local time.', 'Many people wear a red poppy in remembrance of those who died in war.'] },
-            { date: '2025-06-19', name: 'Juneteenth', type: 'us', history: 'Commemorates the end of slavery in the United States. It marks the day in 1865 when Union soldiers announced freedom to enslaved African Americans in Texas.', facts: ['It became a federal holiday in 2021.', 'The name is a combination of "June" and "nineteenth".', 'Common celebrations include barbecues, parades, and historical reenactments.'] },
-            { date: '2025-07-04', name: 'Independence Day', type: 'us', history: 'Celebrates the adoption of the Declaration of Independence on July 4, 1776, when the United States officially separated from Great Britain.', facts: ['Three U.S. presidents have died on July 4th: John Adams, Thomas Jefferson, and James Monroe.', 'The first fireworks on July 4th were set off in 1777.', 'It is the biggest hot dog holiday of the year.'] },
-            { date: '2025-09-01', name: 'Labor Day', type: 'us', history: 'A creation of the labor movement, it is dedicated to the social and economic achievements of American workers. It became a federal holiday in 1894.', facts: ['It is celebrated on the first Monday of September.', 'It is considered the unofficial end of summer.', 'The first Labor Day parade was held in New York City in 1882.'] },
-            { date: '2025-10-13', name: 'Columbus Day', type: 'us', history: 'Commemorates Christopher Columbus\'s arrival in the Americas in 1492. It became a federal holiday in 1937.', facts: ['Many cities and states celebrate Indigenous Peoples\' Day instead.', 'It is celebrated in other countries as "Día de la Raza".', 'The first celebration was in 1792, 300 years after his arrival.'] },
-            { date: '2025-10-31', name: 'Halloween', type: 'us', history: 'Originating from the ancient Celtic festival of Samhain, people would light bonfires and wear costumes to ward off ghosts.', facts: ['The term "trick-or-treat" dates back to the early 20th century.', 'The largest pumpkin ever recorded weighed over 2,600 pounds.', 'Scotland and Ireland still practice many ancient Halloween traditions.'] },
-            { date: '2025-11-11', name: 'Veterans Day', type: 'us', history: 'Originally called "Armistice Day" to mark the end of World War I, it was changed to Veterans Day in 1954 to honor all veterans.', facts: ['It is a federal holiday and a state holiday in all states.', 'It is always observed on November 11th, regardless of the day of the week.', 'Other countries celebrate a similar holiday, like Remembrance Day.'] },
-            { date: '2025-11-27', name: 'Thanksgiving', type: 'us', history: 'Celebrates the harvest feast shared by the Pilgrims and the Wampanoag people in 1621. Abraham Lincoln declared it a national holiday in 1863.', facts: ['The first Macy\'s Thanksgiving Day Parade featured live animals from the Central Park Zoo.', 'About 46 million turkeys are eaten on Thanksgiving each year.', 'The tradition of "pardoning" a turkey began with President George H.W. Bush in 1989.'] },
-            { date: '2025-12-25', name: 'Christmas Day', type: 'us', history: 'A Christian holiday celebrating the birth of Jesus Christ. Many of its traditions, like Christmas trees, have pre-Christian origins.', facts: ['The song "Jingle Bells" was originally written for Thanksgiving.', 'Alabama was the first state to officially recognize Christmas in 1836.', 'The image of Santa Claus was popularized by a Coca-Cola advertising campaign in the 1930s.'] },
-             // 2026
-            { date: '2026-01-01', name: 'New Year\'s Day', type: 'us', history: 'The earliest recorded New Year\'s celebration dates back to ancient Babylon. It marks the start of a new year on the Gregorian calendar.', facts: ['The Times Square ball drop has been a tradition since 1907.', 'Eating black-eyed peas on New Year\'s is thought to bring good luck.', 'Many people make "New Year\'s resolutions" to improve themselves.'] },
-            { date: '2026-01-19', name: 'MLK Jr. Day', type: 'us', history: 'Honors the life and legacy of civil rights leader Martin Luther King Jr. It was signed into law in 1983 and first observed in 1986.', facts: ['It is a day of national service, often referred to as a "day on, not a day off".', 'The holiday is observed on the third Monday of January.', 'Stevie Wonder\'s song "Happy Birthday" was instrumental in the campaign for the holiday.'] },
-            { date: '2026-02-14', name: 'Valentine\'s Day', type: 'us', history: 'Named after St. Valentine, a Roman priest. It evolved into a day of romance from the 14th century onwards.', facts: ['Over 1 billion Valentine\'s Day cards are sent each year.', 'Richard Cadbury produced the first box of chocolates for this holiday in the late 1800s.', 'The phrase "wearing your heart on your sleeve" has medieval origins.'] },
-            { date: '2026-02-16', name: 'Presidents\' Day', type: 'us', history: 'Originally established to celebrate George Washington\'s birthday. It was moved to the third Monday in February and now honors all U.S. presidents.', facts: ['It never falls on the actual birthday of any American president.', 'It\'s a popular day for car and mattress sales.', 'The official name is still "Washington\'s Birthday" for federal purposes.'] },
-            { date: '2026-03-17', name: 'St. Patrick\'s Day', type: 'us', history: 'A cultural and religious holiday celebrating the patron saint of Ireland. It became a public celebration in the United States in the 18th century.', facts: ['The Chicago River is dyed green every year for the celebration.', 'The original color associated with St. Patrick was blue.', 'The world\'s shortest St. Patrick\'s Day parade is in Hot Springs, Arkansas.'] },
-            { date: '2026-04-05', name: 'Easter Sunday', type: 'us', history: 'The most important Christian festival, celebrating the resurrection of Jesus Christ. The tradition of Easter eggs symbolizes new life.', facts: ['Americans spend over $2 billion on Easter candy.', 'The White House Easter Egg Roll tradition was started by President Rutherford B. Hayes.', 'The idea of the Easter Bunny originated in Germany.'] },
-            { date: '2026-05-25', name: 'Memorial Day', type: 'us', history: 'Originally known as Decoration Day, it originated after the Civil War to commemorate fallen soldiers. It became a federal holiday in 1971.', facts: ['It is traditionally seen as the unofficial start of summer.', 'The "National Moment of Remembrance" occurs at 3 p.m. local time.', 'Many people wear a red poppy in remembrance of those who died in war.'] },
-            { date: '2026-06-19', name: 'Juneteenth', type: 'us', history: 'Commemorates the end of slavery in the United States. It marks the day in 1865 when Union soldiers announced freedom to enslaved African Americans in Texas.', facts: ['It became a federal holiday in 2021.', 'The name is a combination of "June" and "nineteenth".', 'Common celebrations include barbecues, parades, and historical reenactments.'] },
-            { date: '2026-07-04', name: 'Independence Day', type: 'us', history: 'Celebrates the adoption of the Declaration of Independence on July 4, 1776, when the United States officially separated from Great Britain.', facts: ['Three U.S. presidents have died on July 4th: John Adams, Thomas Jefferson, and James Monroe.', 'The first fireworks on July 4th were set off in 1777.', 'It is the biggest hot dog holiday of the year.'] },
-            { date: '2026-09-07', name: 'Labor Day', type: 'us', history: 'A creation of the labor movement, it is dedicated to the social and economic achievements of American workers. It became a federal holiday in 1894.', facts: ['It is celebrated on the first Monday of September.', 'It is considered the unofficial end of summer.', 'The first Labor Day parade was held in New York City in 1882.'] },
-            { date: '2026-10-12', name: 'Columbus Day', type: 'us', history: 'Commemorates Christopher Columbus\'s arrival in the Americas in 1492. It became a federal holiday in 1937.', facts: ['Many cities and states celebrate Indigenous Peoples\' Day instead.', 'It is celebrated in other countries as "Día de la Raza".', 'The first celebration was in 1792, 300 years after his arrival.'] },
-            { date: '2026-10-31', name: 'Halloween', type: 'us', history: 'Originating from the ancient Celtic festival of Samhain, people would light bonfires and wear costumes to ward off ghosts.', facts: ['The term "trick-or-treat" dates back to the early 20th century.', 'The largest pumpkin ever recorded weighed over 2,600 pounds.', 'Scotland and Ireland still practice many ancient Halloween traditions.'] },
-            { date: '2026-11-11', name: 'Veterans Day', type: 'us', history: 'Originally called "Armistice Day" to mark the end of World War I, it was changed to Veterans Day in 1954 to honor all veterans.', facts: ['It is a federal holiday and a state holiday in all states.', 'It is always observed on November 11th, regardless of the day of the week.', 'Other countries celebrate a similar holiday, like Remembrance Day.'] },
-            { date: '2026-11-26', name: 'Thanksgiving', type: 'us', history: 'Celebrates the harvest feast shared by the Pilgrims and the Wampanoag people in 1621. Abraham Lincoln declared it a national holiday in 1863.', facts: ['The first Macy\'s Thanksgiving Day Parade featured live animals from the Central Park Zoo.', 'About 46 million turkeys are eaten on Thanksgiving each year.', 'The tradition of "pardoning" a turkey began with President George H.W. Bush in 1989.'] },
-            { date: '2026-12-25', name: 'Christmas Day', type: 'us', history: 'A Christian holiday celebrating the birth of Jesus Christ. Many of its traditions, like Christmas trees, have pre-Christian origins.', facts: ['The song "Jingle Bells" was originally written for Thanksgiving.', 'Alabama was the first state to officially recognize Christmas in 1836.', 'The image of Santa Claus was popularized by a Coca-Cola advertising campaign in the 1930s.'] },
-             // 2027
-            { date: '2027-01-01', name: 'New Year\'s Day', type: 'us', history: 'The earliest recorded New Year\'s celebration dates back to ancient Babylon. It marks the start of a new year on the Gregorian calendar.', facts: ['The Times Square ball drop has been a tradition since 1907.', 'Eating black-eyed peas on New Year\'s is thought to bring good luck.', 'Many people make "New Year\'s resolutions" to improve themselves.'] },
-            { date: '2027-01-18', name: 'MLK Jr. Day', type: 'us', history: 'Honors the life and legacy of civil rights leader Martin Luther King Jr. It was signed into law in 1983 and first observed in 1986.', facts: ['It is a day of national service, often referred to as a "day on, not a day off".', 'The holiday is observed on the third Monday of January.', 'Stevie Wonder\'s song "Happy Birthday" was instrumental in the campaign for the holiday.'] },
-            { date: '2027-02-14', name: 'Valentine\'s Day', type: 'us', history: 'Named after St. Valentine, a Roman priest. It evolved into a day of romance from the 14th century onwards.', facts: ['Over 1 billion Valentine\'s Day cards are sent each year.', 'Richard Cadbury produced the first box of chocolates for this holiday in the late 1800s.', 'The phrase "wearing your heart on your sleeve" has medieval origins.'] },
-            { date: '2027-02-15', name: 'Presidents\' Day', type: 'us', history: 'Originally established to celebrate George Washington\'s birthday. It was moved to the third Monday in February and now honors all U.S. presidents.', facts: ['It never falls on the actual birthday of any American president.', 'It\'s a popular day for car and mattress sales.', 'The official name is still "Washington\'s Birthday" for federal purposes.'] },
-            { date: '2027-03-17', name: 'St. Patrick\'s Day', type: 'us', history: 'A cultural and religious holiday celebrating the patron saint of Ireland. It became a public celebration in the United States in the 18th century.', facts: ['The Chicago River is dyed green every year for the celebration.', 'The original color associated with St. Patrick was blue.', 'The world\'s shortest St. Patrick\'s Day parade is in Hot Springs, Arkansas.'] },
-            { date: '2027-03-28', name: 'Easter Sunday', type: 'us', history: 'The most important Christian festival, celebrating the resurrection of Jesus Christ. The tradition of Easter eggs symbolizes new life.', facts: ['Americans spend over $2 billion on Easter candy.', 'The White House Easter Egg Roll tradition was started by President Rutherford B. Hayes.', 'The idea of the Easter Bunny originated in Germany.'] },
-            { date: '2027-05-31', name: 'Memorial Day', type: 'us', history: 'Originally known as Decoration Day, it originated after the Civil War to commemorate fallen soldiers. It became a federal holiday in 1971.', facts: ['It is traditionally seen as the unofficial start of summer.', 'The "National Moment of Remembrance" occurs at 3 p.m. local time.', 'Many people wear a red poppy in remembrance of those who died in war.'] },
-            { date: '2027-06-19', name: 'Juneteenth', type: 'us', history: 'Commemorates the end of slavery in the United States. It marks the day in 1865 when Union soldiers announced freedom to enslaved African Americans in Texas.', facts: ['It became a federal holiday in 2021.', 'The name is a combination of "June" and "nineteenth".', 'Common celebrations include barbecues, parades, and historical reenactments.'] },
-            { date: '2027-07-04', name: 'Independence Day', type: 'us', history: 'Celebrates the adoption of the Declaration of Independence on July 4, 1776, when the United States officially separated from Great Britain.', facts: ['Three U.S. presidents have died on July 4th: John Adams, Thomas Jefferson, and James Monroe.', 'The first fireworks on July 4th were set off in 1777.', 'It is the biggest hot dog holiday of the year.'] },
-            { date: '2027-09-06', name: 'Labor Day', type: 'us', history: 'A creation of the labor movement, it is dedicated to the social and economic achievements of American workers. It became a federal holiday in 1894.', facts: ['It is celebrated on the first Monday of September.', 'It is considered the unofficial end of summer.', 'The first Labor Day parade was held in New York City in 1882.'] },
-            { date: '2027-10-11', name: 'Columbus Day', type: 'us', history: 'Commemorates Christopher Columbus\'s arrival in the Americas in 1492. It became a federal holiday in 1937.', facts: ['Many cities and states celebrate Indigenous Peoples\' Day instead.', 'It is celebrated in other countries as "Día de la Raza".', 'The first celebration was in 1792, 300 years after his arrival.'] },
-            { date: '2027-10-31', name: 'Halloween', type: 'us', history: 'Originating from the ancient Celtic festival of Samhain, people would light bonfires and wear costumes to ward off ghosts.', facts: ['The term "trick-or-treat" dates back to the early 20th century.', 'The largest pumpkin ever recorded weighed over 2,600 pounds.', 'Scotland and Ireland still practice many ancient Halloween traditions.'] },
-            { date: '2027-11-11', name: 'Veterans Day', type: 'us', history: 'Originally called "Armistice Day" to mark the end of World War I, it was changed to Veterans Day in 1954 to honor all veterans.', facts: ['It is a federal holiday and a state holiday in all states.', 'It is always observed on November 11th, regardless of the day of the week.', 'Other countries celebrate a similar holiday, like Remembrance Day.'] },
-            { date: '2027-11-25', name: 'Thanksgiving', type: 'us', history: 'Celebrates the harvest feast shared by the Pilgrims and the Wampanoag people in 1621. Abraham Lincoln declared it a national holiday in 1863.', facts: ['The first Macy\'s Thanksgiving Day Parade featured live animals from the Central Park Zoo.', 'About 46 million turkeys are eaten on Thanksgiving each year.', 'The tradition of "pardoning" a turkey began with President George H.W. Bush in 1989.'] },
-            { date: '2027-12-25', name: 'Christmas Day', type: 'us', history: 'A Christian holiday celebrating the birth of Jesus Christ. Many of its traditions, like Christmas trees, have pre-Christian origins.', facts: ['The song "Jingle Bells" was originally written for Thanksgiving.', 'Alabama was the first state to officially recognize Christmas in 1836.', 'The image of Santa Claus was popularized by a Coca-Cola advertising campaign in the 1930s.'] },
-
-        ].sort((a,b) => new Date(a.date) - new Date(b.date));
-
-        const nextMonthList = $('#nextMonthHolidayList');
-        const restOfYearList = $('#restOfYearHolidayList');
-        const today = new Date();
-        today.setHours(0,0,0,0);
-        
-        const thirtyDaysFromNow = new Date();
-        thirtyDaysFromNow.setDate(today.getDate() + 30);
-        
-        const threeMonthsFromNow = new Date();
-        threeMonthsFromNow.setMonth(today.getMonth() + 3);
-
-        nextMonthList.innerHTML = '';
-        restOfYearList.innerHTML = '';
-
-        let nextMonthCount = 0;
-        let nextThreeMonthsCount = 0;
-        
-        const createHolidayItem = (holiday) => {
-            const li = document.createElement('li');
-            const dateStr = new Date(holiday.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-            const dotClass = 'dot-us';
-            
-            li.innerHTML = `<div class="holiday-name"><span class="holiday-dot ${dotClass}"></span><strong>${holiday.name}</strong></div> <span>${dateStr}</span>`;
-            li.addEventListener('click', () => showHolidayModal(holiday));
-            return li;
-        };
-
-        holidays.forEach(holiday => {
-            const holidayDate = new Date(holiday.date + 'T00:00:00');
-            if (holidayDate >= today) {
-                const holidayItem = createHolidayItem(holiday);
-                if (holidayDate < thirtyDaysFromNow) {
-                    nextMonthList.appendChild(holidayItem);
-                    nextMonthCount++;
-                } else if (holidayDate < threeMonthsFromNow) {
-                    restOfYearList.appendChild(holidayItem);
-                    nextThreeMonthsCount++;
-                }
-            }
-        });
-        
-        if(nextMonthCount === 0){
-            nextMonthList.innerHTML = '<li>No holidays in the next 30 days.</li>';
-        }
-        if(nextThreeMonthsCount === 0){
-            restOfYearList.innerHTML = '<li>No further holidays in the following 3 months.</li>';
-        }
-
-        const viewMoreToggle = $('#viewMoreHolidays');
-        const restOfYearContent = $('#restOfYearHolidays');
-
-        viewMoreToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const icon = viewMoreToggle.querySelector('.icon');
-            const parentAccordion = viewMoreToggle.closest('.accordion-card').querySelector('.accordion-content');
-
-            if (restOfYearContent.style.maxHeight) {
-                restOfYearContent.style.maxHeight = null;
-                icon.style.transform = 'rotate(0deg)';
-                parentAccordion.style.maxHeight = (parentAccordion.scrollHeight - restOfYearContent.scrollHeight) + "px";
-
-            } else {
-                restOfYearContent.style.maxHeight = restOfYearContent.scrollHeight + "px";
-                icon.style.transform = 'rotate(180deg)';
-                parentAccordion.style.maxHeight = (parentAccordion.scrollHeight + restOfYearContent.scrollHeight) + "px";
-            }
-        });
-    };
-
-    // --- Holiday Modal ---
-    const holidayModal = $('#holidayModal');
-    const modalCloseBtn = $('#modalClose');
-
-    const showHolidayModal = (holidayData) => {
-        $('#modalTitle').textContent = holidayData.name;
-        $('#modalHistory').textContent = holidayData.history;
-        const factsList = $('#modalFacts ul');
-        factsList.innerHTML = '';
-        holidayData.facts.forEach(fact => {
-            const li = document.createElement('li');
-            li.textContent = fact;
-            factsList.appendChild(li);
-        });
-        holidayModal.classList.add('visible');
-    };
-    
-    const hideHolidayModal = () => {
-        holidayModal.classList.remove('visible');
-    };
-
-    modalCloseBtn.addEventListener('click', hideHolidayModal);
-    holidayModal.addEventListener('click', (e) => {
-        if (e.target === holidayModal) {
-            hideHolidayModal();
-        }
-    });
-
-
-    fetchWeather();
-    initHolidayWidget();
-    setInterval(fetchWeather, 30 * 60 * 1000); // Refresh every 30 minutes
-});
-
 </script>
 </body>
 </html>
+
