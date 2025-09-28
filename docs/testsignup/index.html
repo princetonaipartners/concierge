@@ -545,24 +545,35 @@ async function submitForm(e){
 
   // Loading state
   const btn = $('#btnJoin');
-  $('#loading').hidden = false; btn.disabled = true;
+  $('#loading').hidden = false; 
+  btn.disabled = true;
 
-  try{
+  try {
     const res = await fetch(SIGNUP_WEBHOOK + `?t=${Date.now()}`, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ phone: phone10, name, birthday: bday, email, smsOptin: smsOpt })
     });
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const data = await res.json();
 
-    // Success -> show done card with review CTA
+    if(!res.ok) throw new Error('HTTP '+res.status);
+
+    let data = {};
+    try {
+      data = await res.json();   // try to parse JSON if backend sent it
+    } catch(parseErr) {
+      // If backend sent nothing/invalid JSON but status was OK, still treat as success
+      console.warn('Response not JSON, continuing as success', parseErr);
+    }
+
+    // Success -> always show done card
     showScreen('doneCard');
-  }catch(err){
+
+  } catch(err) {
     console.error(err);
     setBanner('errBanner','err','Sign-up failed. Please try again.');
-  }finally{
-    $('#loading').hidden = true; btn.disabled = false;
+  } finally {
+    $('#loading').hidden = true; 
+    btn.disabled = false;
   }
 }
 
