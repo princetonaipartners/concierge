@@ -4,80 +4,305 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Join Hamilton Deli & Grill Rewards</title>
-<style>
-  :root{
-    --bg:#0b1020; --card:#101629; --ink:#e8ecff; --muted:#9aa3b2;
-    --brand:#5fe1a5; --brand2:#55c9ff; --accent:#ffd166;
-    --ring:#2a375a; --shadow:0 10px 30px rgba(0,0,0,.35); --radius:16px;
-  }
-  html,body{margin:0;height:100%;background:
-    radial-gradient(80% 140% at 10% -10%, rgba(85,201,255,.18), transparent 55%),
-    radial-gradient(60% 120% at 110% -10%, rgba(95,225,165,.15), transparent 45%),
-    var(--bg); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Inter,Roboto,Arial;}
-  .wrap{max-width:720px;margin:28px auto;padding:0 18px}
-  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:22px;position:relative}
-  h1{margin:0 0 6px;font-weight:800;text-align:center;}
-  .sub{color:var(--muted);margin-bottom:14px;text-align:center;max-width: 500px; margin-left: auto; margin-right: auto;}
-  .field{display:flex;flex-direction:column;gap:6px;margin-top:10px}
-  label{font-weight:700}
-  input[type="text"],input[type="tel"],input[type="email"]{
-    background:#0e1425;color:#fff;border:1px solid #243055;border-radius:12px;padding:14px;font-size:16px;outline:none}
-  input:focus{box-shadow:0 0 0 3px var(--ring);border-color:#37508f}
-  .hint{color:var(--muted);font-size:13px}
-  .row{display:flex;align-items:center;gap:10px}
-  .actions{margin-top:16px}
-  button{width:100%;padding:15px;border:none;border-radius:12px;font-weight:800;font-size:16px;cursor:pointer}
-  .primary{background:linear-gradient(180deg,var(--brand),var(--brand2));color:#08111f}
-  .ghost{background:#0e1425;color:#c7d2fe;border:1px solid #2b355a}
-  button[disabled]{opacity:.7;cursor:not-allowed}
-  .banner{display:none;margin-bottom:12px;padding:12px 14px;border-radius:12px;font-weight:700}
-  .ok{background:#123724;color:#9ff3c9;border:1px solid #1f6b49}
-  .warn{background:#3a2a07;color:#ffe2a6;border:1px solid #8d6b19}
-  .err{background:#3d0f17;color:#ffd0d8;border:1px solid #8f2236}
-  .promo{margin-top:14px;padding:12px;border:1px dashed #555;border-radius:12px;background:#0f1527}
-  .promo b{color:#ffd166}
-  .cta-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-  .cta{display:inline-block;text-decoration:none;font-weight:800;border:1px solid #2b355a;border-radius:10px;padding:10px 12px;color:#dbe1ff;background:#0e1425}
-  .cta:hover{background:#0f162a}
-  .loading[hidden]{display:none !important;}
-  .loading{position:absolute;inset:0;background:rgba(10,14,25,.55);backdrop-filter:blur(1px);
-          border-radius:16px;display:flex;align-items:center;justify-content:center;gap:10px;z-index:5}
-  .spinner{width:20px;height:20px;border-radius:50%;border:3px solid rgba(85,201,255,.25);border-top-color:#55c9ff;animation:spin .9s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
 
+<!-- Google Fonts: Inter -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+  /* --- 1. Root Variables from Princeton AI Theme --- */
+  :root {
+      --bg-color: #F8F8F6;
+      --primary-text-color: #1D1D1F;
+      --secondary-text-color: #6E6E73;
+      --accent-gradient: linear-gradient(45deg, #0A84FF, #0060CE);
+      --accent-color-start: #0A84FF;
+      --accent-color-end: #0060CE;
+      --border-color: #d2d2d7;
+      --card-bg-color: #FFFFFF;
+      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --success-green: #28a745;
+  }
+
+  /* --- 2. Global Styles --- */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--primary-text-color);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column; /* Centering footer */
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 0;
+  }
+
+  /* --- 3. Dynamic Background Elements --- */
+  #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -2;
+  }
+
+  /* --- 4. Main Layout & Card --- */
+  .wrap { max-width: 550px; width: 100%; margin: auto; padding: 0 1.5rem; }
+  .card {
+    background: var(--card-bg-color);
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.07);
+    padding: 2.5rem;
+    position: relative;
+    border: 1px solid var(--border-color);
+    width: 100%;
+  }
+  .screen-wrapper {
+      position: relative;
+  }
+   .screen {
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+   }
+   .screen.hidden {
+      opacity: 0;
+      transform: scale(0.95);
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+   }
+
+  h1 { 
+      margin: 0 0 8px; 
+      font-weight: 800; 
+      font-size: 2rem; 
+      text-align: center; 
+      color: var(--primary-text-color); 
+      height: 80px; /* Give space for two lines */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  h1 > div { text-align: center; }
+
+  .title-word {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .title-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: char-enter 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+  }
+  @keyframes char-enter { to { opacity: 1; transform: translateY(0); } }
+  
+  .sub {
+    color: var(--secondary-text-color);
+    margin-bottom: 2rem;
+    text-align: center;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.05rem;
+  }
+
+  /* --- 5. Form Element Styling --- */
+  .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem; }
+  label { font-weight: 500; font-size: 0.95rem; }
+  input[type="text"], input[type="tel"], input[type="email"] {
+    background: #FFFFFF;
+    color: var(--primary-text-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 1rem;
+    outline: none;
+    font-family: var(--font-family);
+    transition: all 0.2s ease-in-out;
+  }
+  input:focus {
+    border-color: var(--accent-color-start);
+    box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2);
+  }
+  .hint { color: var(--secondary-text-color); font-size: 0.85rem; }
+  .row { display: flex; align-items: center; gap: 10px; }
+  
+  label.row {
+    cursor: pointer;
+    font-weight: 500;
+  }
+  input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    top: 2px;
+    transition: all 0.2s ease;
+  }
+  input[type="checkbox"]:checked {
+    background-color: var(--accent-color-start);
+    border-color: var(--accent-color-start);
+  }
+  input[type="checkbox"]:checked::after {
+    content: '\f00c';
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    color: white;
+    font-size: 12px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* --- 6. Buttons & CTAs --- */
+  .actions { margin-top: 1.5rem; }
+  button.primary {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 980px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    cursor: pointer;
+    background: var(--accent-gradient);
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0, 113, 227, 0.2);
+  }
+  button.primary:hover {
+      transform: scale(1.03);
+      box-shadow: 0 15px 30px rgba(0, 113, 227, 0.25);
+  }
+  button[disabled] { opacity:.7; cursor:not-allowed; transform: none; box-shadow: none; }
+
+  /* --- 7. Banners & Promo Box --- */
+  .banner{
+    display:none; 
+    margin-bottom:1.25rem; 
+    padding: 0.75rem 1rem; 
+    border-radius:12px; 
+    font-weight:500;
+    border: 1px solid;
+  }
+  .ok{ background:#e6f4ea; color:#1e4620; border-color: #a3d9b3; }
+  .warn{ background:#fff8e6; color:#66460d; border-color: #ffdab3; }
+  .err{ background:#fbeae5; color:#8a260c; border-color: #f5b8a5; }
+
+  .promo{
+    margin-top:1.5rem; 
+    padding:1rem 1.25rem; 
+    border-radius:16px; 
+    background:#e6f3ff; 
+    text-align: center;
+  }
+  .promo-text { color: #004085; font-size: 0.95rem; }
+  .promo-text strong {
+      font-weight: 700;
+      color: #002752;
+  }
+  .promo-text .pulsing-green {
+      color: var(--success-green);
+      font-weight: 800;
+      animation: pulse 2s infinite ease-in-out;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+  
+  .cta-row{display:flex; justify-content: center; gap:10px; margin-top:1rem}
+  .cta{
+      display:inline-flex; 
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration:none;
+      font-weight:600;
+      border:1px solid var(--border-color);
+      border-radius:980px; 
+      padding: 0.6rem 1rem; 
+      color: var(--secondary-text-color); 
+      background: var(--card-bg-color);
+      transition: all 0.2s ease;
+  }
+  .cta:hover{background:#f0f0ed; border-color: #b0b0b0;}
+  
+  /* --- 8. Loading Spinner --- */
+  .loading[hidden]{display:none !important;}
+  .loading{
+    position:absolute; inset:0; 
+    background:rgba(255,255,255,.7); 
+    backdrop-filter:blur(2px);
+    border-radius:24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    z-index:5;
+    color: var(--primary-text-color);
+    font-weight: 500;
+  }
+  .spinner{
+      width:20px;
+      height:20px;
+      border-radius:50%;
+      border:3px solid rgba(10, 132, 255, 0.2);
+      border-top-color:var(--accent-color-start);
+      animation:spin .9s linear infinite
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  
+  /* --- 9. Footer --- */
   .footer {
     text-align: center;
-    padding: 20px 0 40px;
+    padding: 20px 0;
+    margin-top: auto;
   }
   .footer a {
     text-decoration: none;
-    color: var(--muted);
+    color: var(--secondary-text-color);
     font-weight: 500;
     font-size: 14px;
     transition: color 0.2s ease;
     display: block;
     margin-bottom: 8px;
   }
-  .footer a:hover {
-    color: var(--ink);
-  }
+  .footer a:hover { color: var(--primary-text-color); }
   .footer .brand-link {
-    background: linear-gradient(90deg, var(--muted), var(--ink), var(--muted));
+    font-weight: 700;
+    background: linear-gradient(90deg, var(--accent-color-start), var(--accent-color-end), var(--accent-color-start));
     background-size: 200% 100%;
-    background-clip: text;
     -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
-    animation: shimmer 5s infinite linear;
+    animation: shine 10s infinite linear;
   }
+  @keyframes shine { to { background-position: -200% 0; } }
+  
   .footer-subtext {
     font-size: 12px;
-    color: var(--muted);
+    color: var(--secondary-text-color);
     opacity: 0.7;
     margin-bottom: 12px;
   }
   .terms-link {
     font-size: 12px;
-    color: var(--muted);
+    color: var(--secondary-text-color);
     text-decoration: underline;
     cursor: pointer;
     background: none;
@@ -85,32 +310,13 @@
     padding: 0;
     font-family: inherit;
   }
-  .terms-link:hover {
-    color: var(--ink);
-  }
-
-  .shimmer-green {
-    font-weight: 700;
-    background: linear-gradient(90deg, var(--muted), var(--brand), var(--muted));
-    background-size: 200% 100%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    animation: shimmer 4s infinite linear;
-  }
-
-  @keyframes shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-
-  /* Modal Styles */
+  .terms-link:hover { color: var(--primary-text-color); }
+  
+  /* --- 10. Modal Styles --- */
   .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     background: rgba(0,0,0,0.6);
     backdrop-filter: blur(5px);
     display: flex;
@@ -126,33 +332,25 @@
     pointer-events: auto;
   }
   .modal-box {
-    background: var(--card);
+    background: var(--card-bg-color);
     padding: 24px;
-    border-radius: var(--radius);
+    border-radius: 24px;
     max-width: 500px;
     width: calc(100% - 36px);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--ring);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    border: 1px solid var(--border-color);
     transform: scale(0.95);
     transition: transform 0.3s ease;
   }
-  .modal-overlay.visible .modal-box {
-    transform: scale(1);
-  }
-  .modal-box h2 {
-    margin: 0 0 10px;
-  }
+  .modal-overlay.visible .modal-box { transform: scale(1); }
+  .modal-box h2 { margin: 0 0 10px; }
   .modal-box p, .modal-box ul {
-    color: var(--muted);
+    color: var(--secondary-text-color);
     line-height: 1.6;
     font-size: 15px;
   }
-  .modal-box ul {
-    padding-left: 20px;
-  }
-  .modal-box li {
-    margin-bottom: 8px;
-  }
+  .modal-box ul { padding-left: 20px; }
+  .modal-box li { margin-bottom: 8px; }
   .modal-actions {
     margin-top: 20px;
     text-align: right;
@@ -160,89 +358,105 @@
     gap: 10px;
     justify-content: flex-end;
   }
-  .legal-modal {
-      z-index: 101; /* Ensure it appears on top */
+  .modal-actions .ghost {
+      background: #e9e9e7;
+      color: var(--primary-text-color);
+      border: 1px solid var(--border-color);
+      padding: 10px 15px;
   }
+  .modal-actions .ghost:hover{background: #dcdcdc;}
 </style>
 </head>
 <body>
+<div id="particles-js"></div>
 <div class="wrap">
-  <div class="card" id="formCard" aria-live="polite">
-    <div class="loading" id="loading" hidden>
-      <div class="spinner" aria-hidden="true"></div><div>Submitting…</div>
-    </div>
+  <div class="screen-wrapper">
+      <div class="card screen" id="formCard" aria-live="polite">
+        <div class="loading" id="loading" hidden>
+          <div class="spinner" aria-hidden="true"></div><div>Submitting…</div>
+        </div>
+        
+        <h1>
+            <div>
+                <div class="title-word">Welcome to Hamilton</div>
+                <div class="title-word">Deli & Grill Rewards!</div>
+            </div>
+        </h1>
+        <div class="sub">Earn points and redeem them anytime. Just use your phone number at the counter to get started!</div>
+    
+        <div class="banner warn" id="warnBanner"></div>
+        <div class="banner err"  id="errBanner"></div>
+        <div class="banner ok"   id="okBanner"></div>
+    
+        <form id="theForm" novalidate>
+          <div class="field">
+            <label for="phone">Phone number *</label>
+            <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567"/>
+            <div class="hint">Your 10-digit number is used to look you up.</div>
+          </div>
+    
+          <div class="field">
+            <label for="name">Full name *</label>
+            <input id="name" type="text" autocomplete="name" placeholder="Jane Doe"/>
+          </div>
+    
+          <div class="field">
+            <label for="birthday">Birthday *</label>
+            <input id="birthday" type="text" inputmode="numeric" placeholder="yyyy-mm-dd" maxlength="10"/>
+            <div class="hint">Format: <b>YYYY-MM-DD</b>. Hyphens insert automatically.</div>
+          </div>
+    
+          <div class="field">
+            <label for="email">Email (optional)</label>
+            <input id="email" type="email" autocomplete="email" placeholder="jane@example.com"/>
+          </div>
+    
+          <div class="field">
+            <label class="row">
+              <input id="smsOptin" type="checkbox" checked/>
+              <span>Send me exclusive offers & rewards via SMS</span>
+            </label>
+          </div>
+    
+          <div class="actions">
+            <button class="primary" id="btnJoin" type="submit">
+              <span class="btn-label">Join Rewards Program</span>
+            </button>
+          </div>
 
-    <h1>Join Hamilton Deli & Grill Rewards</h1>
-    <div class="sub">Earn points with every purchase and redeem them anytime. Just use your phone number at the counter to earn points, check your points, or <span class="shimmer-green">cash in your rewards!</span></div>
-
-    <!-- $5 review bonus promo -->
-    <div class="promo">
-      <b>$5 off your next purchase:</b> after you join, <u>leave us a Google review</u> and show the cashier—your $5 review bonus will be applied at checkout.
-      <div class="cta-row">
-        <a class="cta" id="reviewLink" target="_blank" rel="noopener">⭐ Leave a Google Review</a>
+           <!-- $5 review bonus promo -->
+            <div class="promo">
+              <p class="promo-text">
+                  <span class="pulsing-green">$5 off your next purchase:</span> after you join, 
+                  <a href="#" id="reviewLink" target="_blank" rel="noopener" style="color: inherit;">leave us a Google review</a> 
+                  and show the cashier—your bonus will be applied at checkout.
+              </p>
+              <div class="cta-row">
+                <a class="cta" id="reviewLinkCta" target="_blank" rel="noopener"><i class="fab fa-google" style="color: #4285F4;"></i> Leave a Google Review</a>
+              </div>
+            </div>
+        </form>
       </div>
-    </div>
-
-    <div class="banner warn" id="warnBanner"></div>
-    <div class="banner err"  id="errBanner"></div>
-    <div class="banner ok"   id="okBanner"></div>
-
-    <form id="theForm" novalidate>
-      <div class="field">
-        <label for="phone">📞 Phone number *</label>
-        <input id="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(555) 123-4567"/>
-        <div class="hint">Digits only; last 10 are used.</div>
+    
+      <!-- Success card -->
+      <div class="card screen hidden" id="doneCard" aria-live="polite">
+        <div class="banner ok" style="display:block">You’re all set! 🎉</div>
+        <p class="sub" style="color: var(--primary-text-color)">
+          Tell the cashier your phone number at checkout. If you leave us a review now and show it to the cashier, you’ll receive <b>$5 off</b> your next purchase.
+        </p>
+        <div class="cta-row">
+          <a class="cta" id="reviewLink2" target="_blank" rel="noopener"><i class="fab fa-google" style="color: #4285F4;"></i> Leave a Google Review</a>
+          <a class="cta" id="backBtn" href="#" role="button">← Back to form</a>
+        </div>
       </div>
-
-      <div class="field">
-        <label for="name">👤 Full name *</label>
-        <input id="name" type="text" autocomplete="name" placeholder="Jane Doe"/>
-      </div>
-
-      <div class="field">
-        <label for="birthday">🎂 Birthday *</label>
-        <input id="birthday" type="text" inputmode="numeric" placeholder="yyyy-mm-dd" maxlength="10"/>
-        <div class="hint">Format: <b>YYYY-MM-DD</b>. Hyphens insert automatically.</div>
-      </div>
-
-      <div class="field">
-        <label for="email">✉️ Email (optional)</label>
-        <input id="email" type="email" autocomplete="email" placeholder="jane@example.com"/>
-      </div>
-
-      <div class="field">
-        <label class="row">
-          <input id="smsOptin" type="checkbox" checked/>
-          <span>Send me exclusive offers & rewards via SMS</span>
-        </label>
-      </div>
-
-      <div class="actions">
-        <button class="primary" id="btnJoin" type="submit">
-          <span class="btn-label">Join rewards</span>
-        </button>
-      </div>
-    </form>
-  </div>
-
-  <!-- Success card -->
-  <div class="card" id="doneCard" style="display:none" aria-live="polite">
-    <div class="banner ok" style="display:block">You’re all set! 🎉</div>
-    <p style="margin:8px 0 12px;color:#cfe6ff">
-      Tell the cashier your phone number at checkout. If you leave us a review now and show it to the cashier, you’ll receive <b>$5 off</b> your next purchase.
-    </p>
-    <div class="cta-row">
-      <a class="cta" id="reviewLink2" target="_blank" rel="noopener">⭐ Leave a Google Review</a>
-      <a class="cta" id="backBtn" href="#" role="button">← Back to form</a>
-    </div>
   </div>
 </div>
 
 <div class="footer">
-  <a href="https://www.princeton-ai.com/index.html" target="_blank" rel="noopener noreferrer" class="brand-link">
-    Powered by Princeton AI Partners
+  <a href="https://www.princeton-ai.com" target="_blank" rel="noopener noreferrer" class="brand-link">
+    Powered by Princeton-AI.com
   </a>
-  <div class="footer-subtext">contact us to bring AI to your small business!</div>
+  <div class="footer-subtext">Contact us to bring AI to your small business!</div>
   <button class="terms-link" id="termsBtn">Points Terms & Conditions</button>
 </div>
 
@@ -257,7 +471,7 @@
       <li>We reserve the right to modify the terms of the rewards program at any time.</li>
     </ul>
     <div class="modal-actions">
-      <button class="ghost" id="closeModalBtn" style="width: auto; padding: 10px 15px;">Close</button>
+      <button class="ghost" id="closeModalBtn">Close</button>
     </div>
     <div style="text-align: center; margin-top: 15px;">
         <button class="terms-link" id="legalBtn">View Full Legal Terms</button>
@@ -271,22 +485,23 @@
       <h2>Rewards Program Legal Terms</h2>
       <p>By participating in the Hamilton Deli & Grill Rewards Program, you agree to these terms. This program is available to individuals 18 years or older. We reserve the right to modify, suspend, or terminate the program at any time without notice. Points are non-transferable, not redeemable for cash, and are void where prohibited by law. We may use the personal information you provide for program administration and marketing communications. Under no circumstances shall we be liable for any direct or indirect damages arising out of the program. These terms are governed by the laws of the State of New Jersey.</p>
       <div class="modal-actions">
-        <button class="ghost" id="closeLegalModalBtn" style="width: auto; padding: 10px 15px;">Close</button>
+        <button class="ghost" id="closeLegalModalBtn">Close</button>
       </div>
     </div>
   </div>
 
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script>
 /* ===== CONFIG ===== */
 const SIGNUP_WEBHOOK = 'https://princetonai.app.n8n.cloud/webhook/cashier-signup';
 const GOOGLE_REVIEW_URL = 'https://www.google.com/search?q=Hamilton+Deli+%26+Grill+Reviews';
 /* =================== */
 
-document.getElementById('reviewLink').href  = GOOGLE_REVIEW_URL;
+document.getElementById('reviewLink').href = GOOGLE_REVIEW_URL;
+document.getElementById('reviewLinkCta').href = GOOGLE_REVIEW_URL;
 document.getElementById('reviewLink2').href = GOOGLE_REVIEW_URL;
 
 function $(q){ return document.querySelector(q); }
-function show(el, on){ el.style.display = on ? 'block' : 'none'; }
 function digits10(v){ const d = String(v||'').replace(/\D/g,''); return d.length>=10 ? d.slice(-10) : null; }
 function clearBanners(){ ['okBanner','warnBanner','errBanner'].forEach(id => { const el = $('#'+id); el.style.display='none'; el.textContent=''; }); }
 function setBanner(id, cls, msg){ const el = $('#'+id); el.className = 'banner ' + cls; el.textContent = msg; el.style.display='block'; }
@@ -301,6 +516,18 @@ function setBanner(id, cls, msg){ const el = $('#'+id); el.className = 'banner '
     el.value = out;
   });
 })();
+
+const ALL_SCREENS = ['formCard', 'doneCard'];
+function showScreen(screenId) {
+    ALL_SCREENS.forEach(id => {
+        const el = $(`#${id}`);
+        if (id === screenId) {
+            el.classList.remove('hidden');
+        } else {
+            el.classList.add('hidden');
+        }
+    });
+}
 
 async function submitForm(e){
   e.preventDefault();
@@ -317,8 +544,8 @@ async function submitForm(e){
   if(!/^\d{4}-\d{2}-\d{2}$/.test(bday)){ setBanner('warnBanner','warn','Birthday must be YYYY-MM-DD.'); return; }
 
   // Loading state
-  const btn = $('#btnJoin'); const label = btn.querySelector('.btn-label');
-  $('#loading').hidden = false; btn.disabled = true; label.textContent = 'Submitting…';
+  const btn = $('#btnJoin');
+  $('#loading').hidden = false; btn.disabled = true;
 
   try{
     const res = await fetch(SIGNUP_WEBHOOK + `?t=${Date.now()}`, {
@@ -330,18 +557,17 @@ async function submitForm(e){
     const data = await res.json();
 
     // Success -> show done card with review CTA
-    show($('#formCard'), false);
-    show($('#doneCard'), true);
+    showScreen('doneCard');
   }catch(err){
     console.error(err);
     setBanner('errBanner','err','Sign-up failed. Please try again.');
   }finally{
-    $('#loading').hidden = true; btn.disabled = false; label.textContent = 'Join rewards';
+    $('#loading').hidden = true; btn.disabled = false;
   }
 }
 
 $('#theForm').addEventListener('submit', submitForm);
-$('#backBtn').addEventListener('click', (e)=>{ e.preventDefault(); show($('#doneCard'), false); show($('#formCard'), true); });
+$('#backBtn').addEventListener('click', (e)=>{ e.preventDefault(); showScreen('formCard'); });
 
 // Modal Logic
 const termsModal = $('#termsModal');
@@ -380,6 +606,41 @@ legalModal.addEventListener('click', (e) => {
     if (e.target === legalModal) {
         showLegalModal(false);
     }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    showScreen('formCard'); // Set initial screen
+    // Title Animation
+    const title = document.querySelector('h1');
+    const lines = title.querySelectorAll('.title-word');
+    let totalDelay = 0;
+    lines.forEach((line, lineIndex) => {
+        const text = line.textContent;
+        line.innerHTML = '';
+        text.split('').forEach((char, charIndex) => {
+            const span = document.createElement('span');
+            span.className = 'title-char';
+            span.textContent = char === ' ' ? '\u00A0' : char;
+            span.style.animationDelay = `${totalDelay + charIndex * 0.03}s`;
+            line.appendChild(span);
+        });
+        totalDelay += text.length * 0.03 + 0.1; // Add delay between lines
+    });
+
+    // Particles JS
+    particlesJS('particles-js', {
+        "particles": {
+            "number": { "value": 40, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#0A84FF" },
+            "shape": { "type": "circle" },
+            "opacity": { "value": 0.4, "random": true, "anim": { "enable": false } },
+            "size": { "value": 3, "random": true },
+            "line_linked": { "enable": false },
+            "move": { "enable": true, "speed": 1, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+        },
+        "interactivity": { "detect_on": "canvas", "events": { "onhover": { "enable": false }, "onclick": { "enable": false }, "resize": true } },
+        "retina_detect": true
+    });
 });
 
 </script>
